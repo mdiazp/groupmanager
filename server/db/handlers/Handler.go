@@ -3,13 +3,16 @@ package handlers
 import (
 	"database/sql"
 	"fmt"
+
+	_ "github.com/lib/pq"
 )
 
-// ModelHandler ...
-type ModelHandler interface {
-	UserDBHandler
-	GroupAdminDBHandler
-	GroupUserDBHandler
+// Handler ...
+type Handler interface {
+	UserHandler
+	GroupHandler
+	GroupAdminHandler
+	GroupADUserHandler
 }
 
 // DatabaseConfig ...
@@ -20,8 +23,8 @@ type DatabaseConfig interface {
 	GetDBDriver() string
 }
 
-// NewModelHandler ...
-func NewModelHandler(conf DatabaseConfig) ModelHandler {
+// NewHandler ...
+func NewHandler(conf DatabaseConfig) (Handler, error) {
 	dbName := conf.GetDBName()
 	dbUser := conf.GetDBUser()
 	dbPassword := conf.GetDBPassword()
@@ -32,14 +35,14 @@ func NewModelHandler(conf DatabaseConfig) ModelHandler {
 
 	db, e := sql.Open(dbDriver, conn)
 	if e != nil {
-		panic(e)
+		return nil, fmt.Errorf("Fail opennig database: %s", e.Error())
 	}
 
-	return &modelHandler{
+	return &handler{
 		DB: db,
-	}
+	}, nil
 }
 
-type modelHandler struct {
+type handler struct {
 	DB *sql.DB
 }

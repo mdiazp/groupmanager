@@ -1,5 +1,6 @@
-drop table group_user cascade;
+drop table group_aduser cascade;
 drop table group_admin cascade;
+drop table gmgroup cascade;
 drop table gmuser cascade;
 
 create table gmuser(
@@ -8,18 +9,24 @@ create table gmuser(
     rol         varchar(100) not null
 );
 
-create table group_admin(
-    id          serial primary key,
-    adgroup     varchar(100) not null,
-    id_gmuser   integer not null references gmuser(id) ON DELETE CASCADE,
-    
-    CONSTRAINT adgroup_gmuser UNIQUE (adgroup, id_gmuser)
+create table gmgroup(
+    id          serial PRIMARY key,
+    adgroup   varchar(100) not null unique
 );
 
-create table group_user(
+create table group_admin(
     id          serial primary key,
-    adgroup     varchar(100) not null,
-    aduser      varchar(100) not null,
+    id_gmgroup  integer not null references gmgroup(id) ON DELETE CASCADE,
+    id_gmuser   integer not null references gmuser(id) ON DELETE CASCADE,
+    
+    CONSTRAINT adgroup_gmuser UNIQUE (id_gmgroup, id_gmuser)
+);
 
-    CONSTRAINT adgroup_aduser UNIQUE (adgroup, aduser)
+create table group_aduser(
+    id          serial primary key,
+    id_gmgroup  integer not null references gmgroup(id) ON DELETE CASCADE,
+    aduser      varchar(100) not null,
+    aduser_full_name varchar(100) not null,
+
+    CONSTRAINT gmgroup_aduser UNIQUE (id_gmgroup, aduser)
 );

@@ -3,6 +3,6 @@ package models
 // GroupAdmin ...
 type GroupAdmin struct {
 	ID      int
-	ADGroup string
+	IDGroup int
 	IDUser  int
 }

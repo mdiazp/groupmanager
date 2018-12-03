@@ -6,31 +6,39 @@ import (
 	"github.com/mdiazp/groupmanager/server/db/models"
 )
 
-// GroupAdminDBHandler ...
-type GroupAdminDBHandler interface {
+// GroupAdminHandler ...
+type GroupAdminHandler interface {
 	CreateGroupAdmin(o *models.GroupAdmin) error
 	RetrieveGroupAdmin(o *models.GroupAdmin) error
-	RetrieveGroupAdminList(o *[]models.GroupAdmin, adGroup *string, userID *int) error
+	RetrieveGroupAdminList(o *[]models.GroupAdmin, groupID *int, userID *int,
+		limit *int, offset *int, orderby *string, desc *bool) error
 	UpdateGroupAdmin(o *models.GroupAdmin) error
 	DeleteGroupAdmin(o *models.GroupAdmin) error
+
+	CountGroupAdmin(groupID *int, userID *int) error
 }
 
-func (h *modelHandler) CreateGroupAdmin(o *models.GroupAdmin) error {
+func (h *handler) CreateGroupAdmin(o *models.GroupAdmin) error {
 	return fmt.Errorf("not implemented yet")
 }
 
-func (h *modelHandler) RetrieveGroupAdmin(o *models.GroupAdmin) error {
+func (h *handler) RetrieveGroupAdmin(o *models.GroupAdmin) error {
 	return fmt.Errorf("not implemented yet")
 }
 
-func (h *modelHandler) RetrieveGroupAdminList(o *[]models.GroupAdmin, adGroup *string, userID *int) error {
+func (h *handler) RetrieveGroupAdminList(o *[]models.GroupAdmin, groupID *int,
+	userID *int, limit *int, offset *int, orderby *string, desc *bool) error {
 	return fmt.Errorf("not implemented yet")
 }
 
-func (h *modelHandler) UpdateGroupAdmin(o *models.GroupAdmin) error {
+func (h *handler) UpdateGroupAdmin(o *models.GroupAdmin) error {
 	return fmt.Errorf("not implemented yet")
 }
 
-func (h *modelHandler) DeleteGroupAdmin(o *models.GroupAdmin) error {
+func (h *handler) DeleteGroupAdmin(o *models.GroupAdmin) error {
+	return fmt.Errorf("not implemented yet")
+}
+
+func (h *handler) CountGroupAdmin(groupID *int, userID *int) error {
 	return fmt.Errorf("not implemented yet")
 }
