@@ -1,0 +1,17 @@
+<div class="dialog-wrapper">
+    <div mat-dialog-title>
+      <div style="display: flex; align-items: center;">
+        <mat-icon>warning</mat-icon>
+        <span style="margin-left: 5px;">Attention!</span>
+      </div>
+    </div>
+    <mat-dialog-content>
+      <p>{{this.msg}}</p>
+    </mat-dialog-content>
+    <mat-dialog-actions>
+      <button mat-raised-button
+              color="warn"
+              [mat-dialog-close]="true" cdkFocusInitial>Accept</button>
+      <button mat-raised-button [mat-dialog-close]="false">Cancel</button>
+    </mat-dialog-actions>
+</div>

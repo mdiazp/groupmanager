@@ -1,0 +1,41 @@
+<div class="showone-tab-item-wrapper">
+  <div class="update-form-wrapper">
+
+    <form [formGroup]="form">
+      <div>
+        <mat-form-field>
+          <mat-select formControlName="rol" placeholder="Rol">
+            <mat-option [value]="'Admin'">
+              Admin
+            </mat-option>
+            <mat-option [value]="'User'">
+              User
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
+
+        <mat-checkbox formControlName="enabled"
+                      [labelPosition]="'before'"> Actived
+        </mat-checkbox>
+      </div>
+    </form>
+
+    <div class="update-form-button-wrapper">
+      <!--span class="flex-space"></span-->
+
+      <button mat-raised-button class="update-form-button"
+              color="warn"
+              (click)="onSave()"
+              [disabled]="!(this.form.valid)">
+        <mat-icon>update</mat-icon>
+        <span>Save</span>
+      </button>
+
+      <button mat-raised-button class="update-form-button"
+              (click)="ResetValues()">
+        <mat-icon>history</mat-icon>
+        <span>Reset</span>
+      </button>
+    </div>
+  </div>
+</div>

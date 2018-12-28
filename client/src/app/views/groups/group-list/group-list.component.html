@@ -1,0 +1,95 @@
+<mat-card>
+  <mat-card-content>
+    <section class="list-wrapper">
+      <header class="list-header list-wrapper-item">
+          <span class="list-header-title">
+            <mat-icon>list</mat-icon><span>Groups</span>
+          </span>
+          <span class="flex-space"></span>
+          <button mat-raised-button color="primary" (click)="onNew()">
+              <mat-icon>add</mat-icon>New</button>
+      </header>
+
+      <mat-accordion class="list-filter-accordion list-wrapper-item">
+          <mat-expansion-panel>
+              <mat-expansion-panel-header>
+                  <mat-panel-title> Filter </mat-panel-title>
+              </mat-expansion-panel-header>
+              <mat-form-field>
+                  <input #nameFilter matInput placeholder="Name"> </mat-form-field>
+              <mat-form-field>
+                  <mat-select #activedFilter placeholder="Actived">
+                    <mat-option [value]="'all'">
+                      all
+                    </mat-option>
+                    <mat-option [value]="true">
+                      yes
+                    </mat-option>
+                    <mat-option [value]="false">
+                      no
+                    </mat-option>
+                  </mat-select>
+              </mat-form-field>
+
+              <app-ad-user-selector></app-ad-user-selector>
+
+          </mat-expansion-panel>
+      </mat-accordion>
+
+      <section class="list-table list-wrapper-item">
+        <mat-table [dataSource]="dataSource" class="mat-elevation-z8"
+              matSort matSortActive="id" matSortDirection="asc" matSortDisableClear>
+
+            <ng-container matColumnDef="id">
+                <mat-header-cell *matHeaderCellDef mat-sort-header>ID</mat-header-cell>
+                <mat-cell *matCellDef="let g">
+                  <a [routerLink]="['/','groups', 'showone', g.ID]">{{g.ID}}</a>
+                </mat-cell>
+            </ng-container>
+
+            <ng-container matColumnDef="name">
+                <mat-header-cell *matHeaderCellDef mat-sort-header>Name</mat-header-cell>
+                <mat-cell class="name-cell"
+                          *matCellDef="let g">
+                  <a [routerLink]="['/','groups', 'showone', g.ID]">{{g.Name}}</a>
+                </mat-cell>
+            </ng-container>
+
+            <ng-container matColumnDef="description">
+                <mat-header-cell *matHeaderCellDef>Description</mat-header-cell>
+                <mat-cell class="description-cell"
+                          *matCellDef="let g">{{g.Description}}</mat-cell>
+            </ng-container>
+
+            <ng-container matColumnDef="actived">
+                <mat-header-cell *matHeaderCellDef>Actived</mat-header-cell>
+                <mat-cell class="actived-cell"
+                          *matCellDef="let g">
+                  <mat-icon *ngIf="g.Actived" color="green">check_box</mat-icon>
+                  <mat-icon *ngIf="!(g.Actived)">check_box_outline_blank</mat-icon>
+                </mat-cell>
+            </ng-container>
+
+            <ng-container matColumnDef="operations">
+                <mat-header-cell *matHeaderCellDef>Operations</mat-header-cell>
+                <mat-cell class="operations-cell"
+                          *matCellDef="let xu">
+                  <button mat-icon-button (click)="this.onDelete(xu.ID, xu.Name)">
+                      <mat-icon aria-label="Delete" color="warn">delete</mat-icon>
+                  </button>
+                </mat-cell>
+            </ng-container>
+
+            <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+
+            <mat-row *matRowDef="let row; columns: displayedColumns"></mat-row>
+
+        </mat-table>
+
+        <mat-paginator [length]="(dataSource.count$ | async)" [pageSize]="initialPageSize"
+                       [pageSizeOptions]="pageSizeOptions">
+        </mat-paginator>
+      </section>
+    </section>
+  </mat-card-content>
+</mat-card>

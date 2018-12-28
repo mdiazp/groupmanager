@@ -1,0 +1,121 @@
+<mat-card>
+  <mat-card-content>
+    <section class="list-wrapper">
+      <header class="list-header list-wrapper-item">
+          <span class="list-header-title">
+            <mat-icon>list</mat-icon><span>Users</span>
+          </span>
+          <span class="flex-space"></span>
+          <button mat-raised-button color="primary" (click)="onNew()">
+              <mat-icon>add</mat-icon>Register</button>
+      </header>
+
+      <mat-accordion class="list-filter-accordion list-wrapper-item">
+          <mat-expansion-panel>
+              <mat-expansion-panel-header>
+                  <mat-panel-title> Filter </mat-panel-title>
+              </mat-expansion-panel-header>
+
+              <mat-form-field>
+                  <input #usernameFilter matInput placeholder="Username"> </mat-form-field>
+
+              <mat-form-field>
+                  <input #nameFilter matInput placeholder="Name"> </mat-form-field>
+
+              <mat-form-field>
+                <mat-select #rolFilter placeholder="Rol">
+                  <mat-option [value]="'all'">
+                    all
+                  </mat-option>
+                  <mat-option [value]="'Admin'">
+                    Admin
+                  </mat-option>
+                  <mat-option [value]="'User'">
+                    User
+                  </mat-option>
+                </mat-select>
+              </mat-form-field>
+
+              <mat-form-field>
+                  <mat-select #enabledFilter placeholder="Enabled">
+                    <mat-option [value]="'all'">
+                      all
+                    </mat-option>
+                    <mat-option [value]="true">
+                      yes
+                    </mat-option>
+                    <mat-option [value]="false">
+                      no
+                    </mat-option>
+                  </mat-select>
+              </mat-form-field>
+          </mat-expansion-panel>
+      </mat-accordion>
+
+      <section class="list-table list-wrapper-item">
+        <mat-table [dataSource]="dataSource" class="mat-elevation-z8"
+              matSort matSortActive="id" matSortDirection="asc" matSortDisableClear>
+
+            <ng-container matColumnDef="id">
+                <mat-header-cell *matHeaderCellDef mat-sort-header>ID</mat-header-cell>
+                <mat-cell *matCellDef="let g">
+                  <a [routerLink]="['/','users', 'showone', g.ID]">{{g.ID}}</a>
+                </mat-cell>
+            </ng-container>
+
+            <ng-container matColumnDef="name">
+              <mat-header-cell *matHeaderCellDef mat-sort-header>Name</mat-header-cell>
+              <mat-cell class="name-cell"
+                        *matCellDef="let g">
+                <a [routerLink]="['/','users', 'showone', g.ID]">{{g.Name}}</a>
+              </mat-cell>
+            </ng-container>
+
+            <ng-container matColumnDef="username">
+                <mat-header-cell *matHeaderCellDef mat-sort-header>Username</mat-header-cell>
+                <mat-cell class="username-cell"
+                          *matCellDef="let g">
+                  <a [routerLink]="['/','users', 'showone', g.ID]">{{g.Username}}</a>
+                </mat-cell>
+            </ng-container>
+
+            <ng-container matColumnDef="rol">
+              <mat-header-cell *matHeaderCellDef mat-sort-header>Rol</mat-header-cell>
+              <mat-cell class="rol-cell"
+                        *matCellDef="let g">
+                  {{g.Rol}}
+              </mat-cell>
+            </ng-container>
+
+            <ng-container matColumnDef="enabled">
+                <mat-header-cell *matHeaderCellDef>Enabled</mat-header-cell>
+                <mat-cell class="enabled-cell"
+                          *matCellDef="let g">
+                  <mat-icon *ngIf="g.Enabled" color="green">check_box</mat-icon>
+                  <mat-icon *ngIf="!(g.Enabled)">check_box_outline_blank</mat-icon>
+                </mat-cell>
+            </ng-container>
+
+            <ng-container matColumnDef="operations">
+                <mat-header-cell *matHeaderCellDef>Operations</mat-header-cell>
+                <mat-cell class="operations-cell"
+                          *matCellDef="let xu">
+                  <button mat-icon-button (click)="this.onDelete(xu.ID, xu.Username)">
+                      <mat-icon aria-label="Delete" color="warn">delete</mat-icon>
+                  </button>
+                </mat-cell>
+            </ng-container>
+
+            <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+
+            <mat-row *matRowDef="let row; columns: displayedColumns"></mat-row>
+
+        </mat-table>
+
+        <mat-paginator [length]="(dataSource.count$ | async)" [pageSize]="initialPageSize"
+                       [pageSizeOptions]="pageSizeOptions">
+        </mat-paginator>
+      </section>
+    </section>
+  </mat-card-content>
+</mat-card>

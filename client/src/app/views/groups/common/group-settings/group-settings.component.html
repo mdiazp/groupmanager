@@ -1,0 +1,24 @@
+<div class="showone-tab-item-wrapper">
+  <div class="update-form-wrapper">
+    <app-form-group [initialValues]="group">
+    </app-form-group>
+
+    <div class="update-form-button-wrapper">
+      <!--span class="flex-space"></span-->
+
+      <button mat-raised-button class="update-form-button"
+              color="warn"
+              (click)="onSave()"
+              [disabled]="!(this.form.Valid())">
+        <mat-icon>update</mat-icon>
+        <span>Save</span>
+      </button>
+
+      <button mat-raised-button class="update-form-button"
+              (click)="form.ResetValues()">
+        <mat-icon>history</mat-icon>
+        <span>Reset</span>
+      </button>
+    </div>
+  </div>
+</div>

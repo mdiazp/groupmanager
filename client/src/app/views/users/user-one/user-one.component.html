@@ -1,0 +1,36 @@
+<mat-card>
+  <mat-card-header *ngIf="!(loading$ | async)">
+    <mat-card-title style="color: #1e88e5;">
+      User: {{user.Name}}
+    </mat-card-title>
+  </mat-card-header>
+  <mat-card-content>
+    <mat-tab-group *ngIf="!(loading$ | async)">
+      <mat-tab>
+        <ng-template mat-tab-label>
+            <mat-icon class="showone-tab-icon">info</mat-icon>
+            Info
+        </ng-template>
+        <app-user-info class="user-one-item" [user]="this.user"></app-user-info>
+      </mat-tab>
+      <mat-tab>
+        <ng-template mat-tab-label>
+          <mat-icon class="showone-tab-icon">settings</mat-icon>
+          Settings
+        </ng-template>
+        <div>
+          <app-user-settings class="user-one-item"
+                              [user]="this.user"
+                              (change)="refresh($event)"></app-user-settings>
+        </div>
+      </mat-tab>
+      <mat-tab>
+        <ng-template mat-tab-label>
+          <mat-icon class="showone-tab-icon">supervisor_account</mat-icon>
+          Groups
+        </ng-template>
+        <app-user-group-list [user]="user"></app-user-group-list>
+      </mat-tab>
+    </mat-tab-group>
+  </mat-card-content>
+</mat-card>

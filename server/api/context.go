@@ -2,9 +2,10 @@ package api
 
 import (
 	"context"
+	"fmt"
 	"net/http"
 
-	"github.com/mdiazp/groupmanager/server/db/models"
+	"github.com/mdiazp/gm/server/db/models"
 )
 
 // ContextVar ...
@@ -37,10 +38,13 @@ func (b *base) ContextWriteAuthor(r *http.Request, author *models.User) {
 }
 
 // ContextReadAuthor ...
-func (b *base) ContextReadAuthor(r *http.Request) *models.User {
-	x := ctxR(r, ContextVarResponse)
+func (b *base) ContextReadAuthor(w http.ResponseWriter, r *http.Request, required ...bool) *models.User {
+	x := ctxR(r, ContextVarAuthor)
 	if author, ok := x.(*models.User); ok {
 		return author
+	}
+	if len(required) > 0 && required[0] {
+		b.WE(w, fmt.Errorf("User was not found in context"), 500)
 	}
 	return nil
 }

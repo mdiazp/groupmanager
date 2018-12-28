@@ -1,0 +1,118 @@
+/* You can add global styles to this file, and also import other style files */
+.flex-space {
+  flex: 1 1 auto;
+}
+
+///////////////////////////////////////////////////////////////////////////
+/*
+.list-wrapper {
+  position: static;
+  display: flex;
+  flex-flow: column wrap;
+}
+*/
+
+.list-wrapper-item {
+  margin: 20px 0;
+}
+
+.list-header {
+  display: flex;
+  flex-flow: row wrap;
+}
+
+@media(max-width:300px) {
+  .list-header {
+    display: flex;
+    flex-flow: column wrap;
+    align-items: center;
+  }
+}
+
+.list-header-title {
+  display: flex;
+  flex-flow: row wrap;
+  align-items: center;
+  color: #26c6da;
+
+  span {
+    margin-left: 5px;
+  }
+}
+
+.list-filter-accordion{
+  margin: 20px 0;
+}
+
+.list-table {
+  position: relative;
+  // min-width: 400px;
+}
+
+.list-table-loading {
+  display: flex;
+  flex-flow: row wrap;
+  //align-items: center;
+  justify-content: center;
+  height: 20px;
+  //width: 100%;
+  //position: fixed;
+}
+
+a {
+  text-decoration: none;
+}
+
+///////////////////////////////////////////////////////////////////////////
+.showone-tab-item-wrapper {
+  padding: 20px;
+}
+
+.showone-tab-icon {
+  margin-right: 8px;
+}
+
+//////////////////////////////////////////////////////////////////////////
+.update-form-wrapper {
+  display: flex;
+  flex-flow: column wrap;
+}
+
+.update-form-button-wrapper {
+  display: flex;
+  flex-flow: row-reverse wrap;
+
+  .update-form-button {
+    margin-left: 10px;
+    margin-top: 10px;
+  }
+
+  @media(max-width: 400px) {
+    flex-flow: column wrap;
+
+    .update-form-button {
+      margin-left: 0;
+      width: 100%;
+    }
+  }
+}
+
+////////////////////////////////////////////////////////////////////////
+.user-selector-wrapper {
+  display: flex;
+  flex-flow: row-reverse wrap-reverse;
+  align-items: center;
+  margin-bottom: 15px;
+}
+
+.xxspace {
+  @media(min-width: 480px) {
+    width: 15px;
+  }
+}
+
+.user-selector-button {
+  @media(max-width: 480px) {
+    width: 100%;
+  }
+}

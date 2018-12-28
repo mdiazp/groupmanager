@@ -1,0 +1,32 @@
+<div class="showone-tab-item-wrapper">
+  <div>
+    <b>Id:</b> <span>{{group.ID}}</span>
+  </div>
+  <div>
+    <b>Name:</b> <span>{{group.Name}}</span>
+  </div>
+  <div>
+    <b>Description:</b>
+    <pre>{{group.Description}}</pre>
+  </div>
+  <div>
+    <mat-checkbox [labelPosition]="'before'"
+                  [disabled]="true"
+                  [checked]="group.Actived"> Actived
+    </mat-checkbox>
+  </div>
+
+  <div style="height: 20px; width: 100%;"></div>
+
+  <mat-accordion>
+    <mat-expansion-panel [expanded]="true">
+      <mat-expansion-panel-header>
+        <mat-panel-title>
+          Users
+        </mat-panel-title>
+      </mat-expansion-panel-header>
+
+      <app-group-aduser-list [group]="group"></app-group-aduser-list>
+    </mat-expansion-panel>
+  </mat-accordion>
+</div>

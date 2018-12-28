@@ -1,3 +1,0 @@
-psql -U groupmanager -d groupmanager -c "select * from users;"
-
-psql -U groupmanager -f db/dbsetup/setup.sql -d groupmanager

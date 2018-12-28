@@ -2,10 +2,22 @@ package conf
 
 // DatabaseConfig ...
 type DatabaseConfig struct {
+	DBHost     string
+	DBPort     int
 	DBName     string
 	DBUser     string
 	DBPassword string
-	DBDriver   string
+	DBDialect  string
+}
+
+// GetDBHost ...
+func (d *DatabaseConfig) GetDBHost() string {
+	return d.DBHost
+}
+
+// GetDBPort ...
+func (d *DatabaseConfig) GetDBPort() int {
+	return d.DBPort
 }
 
 // GetDBName ...
@@ -23,7 +35,7 @@ func (d *DatabaseConfig) GetDBPassword() string {
 	return d.DBPassword
 }
 
-// GetDBDriver ...
-func (d *DatabaseConfig) GetDBDriver() string {
-	return d.DBDriver
+// GetDBDialect ...
+func (d *DatabaseConfig) GetDBDialect() string {
+	return d.DBDialect
 }

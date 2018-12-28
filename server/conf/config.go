@@ -12,6 +12,8 @@ type Configuration struct {
 	LogsConfig
 	JWTConfig
 	ADConfig
+	HTTPConfig
+	APIDoc
 }
 
 // LoadConfiguration ...

@@ -1,0 +1,43 @@
+<div class="showone-tab-item-wrapper">
+  <div class="user-selector-wrapper">
+    <button class="user-selector-button"
+            mat-raised-button
+            color="primary"
+            [disabled]="!userSelector.ValidSelection()"
+            (click)="onNew()">
+      <mat-icon>add</mat-icon>Add
+    </button>
+    <span class="xxspace"></span>
+    <app-user-selector class="flex-space"></app-user-selector>
+  </div>
+
+  <mat-table [dataSource]="dataSource" class="mat-elevation-z8">
+
+      <ng-container matColumnDef="username">
+          <mat-header-cell *matHeaderCellDef>Username</mat-header-cell>
+          <mat-cell class="name-cell"
+                    *matCellDef="let ga">
+            <a [routerLink]="['/','users', 'showone', ga.UserID]">{{ga.Username}}</a>
+          </mat-cell>
+      </ng-container>
+
+      <ng-container matColumnDef="operations">
+          <mat-header-cell *matHeaderCellDef>Operations</mat-header-cell>
+          <mat-cell class="operations-cell"
+                    *matCellDef="let ga">
+            <button mat-icon-button (click)="this.onDelete(ga.UserID, ga.Username)">
+                <mat-icon aria-label="Delete" color="warn">delete</mat-icon>
+            </button>
+          </mat-cell>
+      </ng-container>
+
+      <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+
+      <mat-row *matRowDef="let row; columns: displayedColumns"></mat-row>
+
+  </mat-table>
+
+  <mat-paginator [length]="(dataSource.count$ | async)" [pageSize]="initialPageSize"
+                  [pageSizeOptions]="pageSizeOptions">
+  </mat-paginator>
+</div>

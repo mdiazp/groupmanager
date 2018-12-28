@@ -1,0 +1,633 @@
+swagger: '2.0'
+info:
+  version: 0.1 (beta)
+  title: api-gm
+  description: Group Manager
+host: 'api.gm.local:1234'
+basePath: /
+schemes:
+  - http
+consumes:
+  - application/json
+produces:
+  - application/json
+paths:
+  /session:
+    post:
+      tags:
+        - account
+      parameters:
+        - $ref: '#/parameters/credentials'
+      responses:
+        '200':
+          schema:
+            $ref: '#/definitions/session'
+          description: token to use as header AuthToken
+        '401':
+          description: Unauthorized
+        '500':
+          description: Internal Server Error
+    delete:
+      tags:
+        - account
+      parameters:
+        - $ref: '#/parameters/authToken'
+      responses:
+        '200':
+          schema:
+            type: string
+          description: Session has been closed
+        '403':
+          description: Unauthorized
+        '500':
+          description: Internal Server Error
+  /user:
+    post:
+      tags:
+        - user
+      parameters:
+        - $ref: '#/parameters/authToken'
+        - $ref: '#/parameters/userToRegister.in.body'
+      responses:
+        '201':
+          schema:
+            $ref: '#/definitions/user'
+          description: Created
+        '400':
+          description: Bad Request
+        '403':
+          description: Forbidden
+        '404':
+          description: Not Found
+        '500':
+          description: Internal Server Error
+  /user/{id}:
+    get:
+      tags:
+        - user
+      parameters:
+        - $ref: '#/parameters/authToken'
+        - $ref: '#/parameters/user.id.inpath'
+      responses:
+        '200':
+          schema:
+            $ref: '#/definitions/user'
+          description: User
+        '400':
+          description: Bad Request
+        '403':
+          description: Forbidden
+        '404':
+          description: Not Found
+        '500':
+          description: Internal Server Error
+    patch:
+      tags:
+        - user
+      parameters:
+        - $ref: '#/parameters/authToken'
+        - $ref: '#/parameters/user.id.inpath'
+        - $ref: '#/parameters/userToEdit.in.body'
+      responses:
+        '200':
+          schema:
+            $ref: '#/definitions/user'
+          description: User after update operation
+        '400':
+          description: Bad Request
+        '403':
+          description: Forbidden
+        '500':
+          description: Internal Server Error
+    delete:
+      tags:
+        - user
+      parameters:
+        - $ref: '#/parameters/authToken'
+        - $ref: '#/parameters/user.id.inpath'
+      responses:
+        '204':
+          schema:
+            type: string
+          description: User was deleted successfully
+        '403':
+          description: Unauthorized
+        '500':
+          description: Internal Server Error
+  /users:
+    get:
+      tags:
+        - user
+      parameters:
+        - $ref: '#/parameters/authToken'
+        - $ref: '#/parameters/offset'
+        - $ref: '#/parameters/limit'
+        - $ref: '#/parameters/orderby'
+        - $ref: '#/parameters/desc'
+        - $ref: '#/parameters/users.usernamePrefix'
+        - $ref: '#/parameters/users.nameSubstr'
+        - $ref: '#/parameters/users.provider'
+        - $ref: '#/parameters/users.enabled'
+        - $ref: '#/parameters/users.rol'
+        - $ref: '#/parameters/users.groupWichAdmin'
+      responses:
+        '200':
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/user'
+          description: OK
+        '403':
+          description: Forbidden
+        '500':
+          description: Internal Server Error
+  /userscount:
+    get:
+      tags:
+        - user
+      parameters:
+        - $ref: '#/parameters/authToken'
+        - $ref: '#/parameters/users.usernamePrefix'
+        - $ref: '#/parameters/users.nameSubstr'
+        - $ref: '#/parameters/users.provider'
+        - $ref: '#/parameters/users.enabled'
+        - $ref: '#/parameters/users.rol'
+        - $ref: '#/parameters/users.groupWichAdmin'
+      responses:
+        '200':
+          schema:
+            type: integer
+          description: OK
+        '403':
+          description: Forbidden
+        '500':
+          description: Internal Server Error
+
+  /group:
+    post:
+      tags:
+        - group
+      parameters:
+        - $ref: '#/parameters/authToken'
+        - $ref: '#/parameters/group.in.body'
+      responses:
+        '201':
+          schema:
+            $ref: '#/definitions/group'
+          description: Created
+        '400':
+          description: Bad Request
+        '403':
+          description: Forbidden
+        '404':
+          description: Not Found
+        '500':
+          description: Internal Server Error
+  /group/{id}:
+    get:
+      tags:
+        - group
+      parameters:
+        - $ref: '#/parameters/authToken'
+        - $ref: '#/parameters/group.id.inpath'
+      responses:
+        '200':
+          schema:
+            $ref: '#/definitions/group'
+          description: Group
+        '400':
+          description: Bad Request
+        '403':
+          description: Forbidden
+        '404':
+          description: Not Found
+        '500':
+          description: Internal Server Error
+    patch:
+      tags:
+        - group
+      parameters:
+        - $ref: '#/parameters/authToken'
+        - $ref: '#/parameters/group.in.body'
+      responses:
+        '200':
+          schema:
+            $ref: '#/definitions/group'
+          description: Group after update operation
+        '400':
+          description: Bad Request
+        '403':
+          description: Forbidden
+        '500':
+          description: Internal Server Error
+    delete:
+      tags:
+        - group
+      parameters:
+        - $ref: '#/parameters/authToken'
+        - $ref: '#/parameters/group.id.inpath'
+      responses:
+        '204':
+          schema:
+            type: string
+          description: Group was deleted successfully
+        '403':
+          description: Unauthorized
+        '500':
+          description: Internal Server Error
+  /groups:
+    get:
+      tags:
+        - group
+      parameters:
+        - $ref: '#/parameters/authToken'
+        - $ref: '#/parameters/offset'
+        - $ref: '#/parameters/limit'
+        - $ref: '#/parameters/orderby'
+        - $ref: '#/parameters/desc'
+        - $ref: '#/parameters/groups.nameSubstr'
+        - $ref: '#/parameters/groups.actived'
+        - $ref: '#/parameters/groups.adminid'
+      responses:
+        '200':
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/group'
+          description: OK
+        '403':
+          description: Forbidden
+        '500':
+          description: Internal Server Error
+  /groupscount:
+    get:
+      tags:
+        - group
+      parameters:
+        - $ref: '#/parameters/authToken'
+        - $ref: '#/parameters/groups.nameSubstr'
+        - $ref: '#/parameters/groups.actived'
+        - $ref: '#/parameters/groups.adminid'
+      responses:
+        '200':
+          schema:
+            type: integer
+          description: OK
+        '403':
+          description: Forbidden
+        '500':
+          description: Internal Server Error
+
+  /group/{id}/admins/{userID}:
+    put:
+      tags:
+        - groupadmin
+      parameters:
+        - $ref: '#/parameters/authToken'
+        - $ref: '#/parameters/group.id.inpath'
+        - $ref: '#/parameters/userID.inpath'
+      responses:
+        '201':
+          schema:
+            $ref: '#/definitions/groupadmin'
+          description: Created
+        '400':
+          description: Bad Request
+        '403':
+          description: Forbidden
+        '404':
+          description: Not Found
+        '500':
+          description: Internal Server Error
+    delete:
+      tags:
+        - groupadmin
+      parameters:
+        - $ref: '#/parameters/authToken'
+        - $ref: '#/parameters/group.id.inpath'
+        - $ref: '#/parameters/userID.inpath'
+      responses:
+        '200':
+          schema:
+            $ref: '#/definitions/groupadmin'
+          description: Created
+        '400':
+          description: Bad Request
+        '403':
+          description: Forbidden
+        '404':
+          description: Not Found
+        '500':
+          description: Internal Server Error
+  /group/{id}/admins:
+    get:
+      tags:
+        - groupadmin
+      parameters:
+        - $ref: '#/parameters/authToken'
+        - $ref: '#/parameters/group.id.inpath'
+        - $ref: '#/parameters/offset'
+        - $ref: '#/parameters/limit'
+        - $ref: '#/parameters/orderby'
+        - $ref: '#/parameters/desc'
+      responses:
+        '200':
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/groupadmin'
+          description: OK
+        '403':
+          description: Forbidden
+        '500':
+          description: Internal Server Error
+  /group/{id}/adminscount:
+    get:
+      tags:
+        - groupadmin
+      parameters:
+        - $ref: '#/parameters/authToken'
+        - $ref: '#/parameters/group.id.inpath'
+      responses:
+        '200':
+          schema:
+            type: integer
+          description: OK
+        '403':
+          description: Forbidden
+        '500':
+          description: Internal Server Error
+definitions:
+  credentials:
+    properties:
+      Username:
+        maxLength: 50
+        format: string
+        type: string
+      Password:
+        maxLength: 50
+        format: password
+        type: string
+      Provider:
+        maxLength: 50
+        format: string
+        type: string
+  jwtToken:
+    properties:
+      token:
+        format: string
+        type: string
+  session:
+    properties:
+      User:
+        $ref: '#/definitions/user'
+      Token: 
+        format: string
+        type: string
+  userToRegister:
+    properties:
+      Provider:
+        maxLength: 100
+        format: character varying
+        type: string
+      Username:
+        maxLength: 100
+        format: character varying
+        type: string
+  userToEdit:
+    properties:
+      Rol:
+        maxLength: 100
+        format: character varying
+        type: string
+      Enabled:
+        maxLength: 100
+        format: boolean
+        type: boolean
+  user:
+    properties:
+      ID:
+        format: integer
+        type: integer
+        description: |-
+          Note:
+          This is a Primary Key.<pk/>
+      Provider:
+        maxLength: 100
+        format: character varying
+        type: string
+      Username:
+        maxLength: 100
+        format: character varying
+        type: string
+      Name:
+        maxLength: 100
+        format: character varying
+        type: string
+      Rol:
+        maxLength: 100
+        format: character varying
+        type: string
+      Enabled:
+        maxLength: 100
+        format: boolean
+        type: boolean
+  group:
+    properties:
+      ID:
+        format: integer
+        type: integer
+        description: |-
+          Note:
+          This is a Primary Key.<pk/>
+      Name:
+        maxLength: 255
+        format: character varying
+        type: string
+      Description:
+        maxLength: 500
+        format: character varying
+        type: string
+      Actived:
+        format: boolean
+        type: boolean
+    type: object
+  groupadmin:
+    properties:
+      ID:
+        format: integer
+        type: integer
+        description: |-
+          Note:
+          This is a Primary Key.<pk/>
+      Username:
+        maxLength: 100
+        format: character varying
+        type: string
+      UserID:
+        format: interger
+        type: integer
+      GroupID:
+        format: interger
+        type: integer
+    type: object
+  groupadminToPost:
+    properties:
+      UserID:
+        format: interger
+        type: integer
+      GroupID:
+        format: interger
+        type: integer
+    type: object
+parameters:
+  offset:
+    name: offset
+    description: offset to paginate results
+    required: false
+    in: query
+    type: integer
+  limit:
+    name: limit
+    description: limit to paginate results
+    required: false
+    in: query
+    type: integer
+  orderby:
+    name: orderby
+    description: for sorting of results by some some property
+    required: false
+    in: query
+    type: string
+  desc:
+    name: desc
+    description: for sorting of results descendently(true) o ascendently(false) 
+    required: false
+    in: query
+    type: boolean
+  credentials:
+    name: Credentials
+    description: for authentication
+    required: true
+    schema:
+      $ref: '#/definitions/credentials'
+    in: body
+  authToken:
+    name: AuthToken
+    description: for authentication
+    required: true
+    in: header
+    type: string
+  userToRegister.in.body:
+    name: UserToRegister
+    description: info for registering
+    required: true
+    schema:
+      $ref: '#/definitions/userToRegister'
+    in: body
+  userToEdit.in.body:
+    name: userToEdit
+    description: update
+    required: true
+    schema:
+      $ref: '#/definitions/userToEdit'
+    in: body
+  user.in.body:
+    name: User
+    description: user
+    required: true
+    schema:
+      $ref: '#/definitions/user'
+    in: body
+  user.id.inpath:
+    name: id
+    description: User ID
+    required: true
+    in: path
+    type: integer
+  userID.inpath:
+    name: userID
+    description: User ID
+    required: true
+    in: path
+    type: integer
+  users.usernamePrefix:
+    name: usernamePrefix
+    description: for horizontal filtering
+    required: false
+    in: query
+    type: string
+  users.nameSubstr:
+    name: nameSubstr
+    description: for horizontal filtering
+    required: false
+    in: query
+    type: string
+  users.provider:
+    name: provider
+    description: for horizontal filtering
+    required: false
+    in: query
+    type: string
+  users.enabled:
+    name: enabled
+    description: for horizontal filtering
+    required: false
+    in: query
+    type: boolean
+  users.rol:
+    name: rol
+    description: for horizontal filtering
+    required: false
+    in: query
+    type: string
+  users.groupWichAdmin:
+    name: groupWichAdmin
+    description: for horizontal filtering
+    required: false
+    in: query
+    type: integer
+  group.in.body:
+    name: Group
+    description: group
+    required: true
+    schema:
+      $ref: '#/definitions/group'
+    in: body
+  group.id.inpath:
+    name: id
+    description: group ID
+    required: true
+    in: path
+    type: integer
+  groups.nameSubstr:
+    name: nameSubstr
+    description: for horizontal filtering
+    required: false
+    in: query
+    type: string
+  groups.actived:
+    name: actived
+    description: for horizontal filtering
+    required: false
+    in: query
+    type: boolean
+  groups.adminid:
+    name: adminid
+    description: for horizontal filtering
+    required: false
+    in: query
+    type: integer
+  groupadmin.groupid:
+    name: groupID
+    description: for horizontal filtering
+    required: true
+    in: query
+    type: integer
+  groupadminToPost.in.body:
+    name: GroupAdminToPost
+    description: info for creation
+    required: true
+    schema:
+      $ref: '#/definitions/groupadminToPost'
+    in: body

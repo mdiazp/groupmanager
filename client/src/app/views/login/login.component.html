@@ -1,0 +1,45 @@
+<div class="login-page-wrapper" *ngIf="!this.loading">
+    <div id="login-page-background">
+        <div id="login-page-background-top"></div>
+        <div id="login-page-background-bottom"></div>
+    </div>
+    <div id="login-form-wrapper">
+      <!--div id="login-form"-->
+          <form id="login-form" [formGroup]="loginForm">
+              <div class="text-center">
+                  <h2 class="app-name">XUser Manager</h2>
+              </div>
+              <div>
+                  <mat-form-field>
+                    <input matInput
+                           placeholder="Username"
+                           required
+                           formControlName="username">
+                  </mat-form-field>
+              </div>
+              <div>
+                  <mat-form-field>
+                      <input matInput type="password"
+                             placeholder="Password"
+                             required
+                             formControlName="password">
+                  </mat-form-field>
+              </div>
+              <div>
+                  <mat-form-field>
+                    <mat-select placeholder="Provider"
+                                formControlName="provider">
+                      <mat-option *ngFor="let p of providers" [value]="p">
+                        {{p}}
+                      </mat-option>
+                    </mat-select>
+                  </mat-form-field>
+              </div>
+              <div style="display: flex; flex-flow: row-reverse">
+                  <button mat-raised-button color="primary" (click)="onLogin()">Login</button>
+              </div>
+
+          </form>
+      <!--/div-->
+    </div>
+</div>

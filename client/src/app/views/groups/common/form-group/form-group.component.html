@@ -1,0 +1,22 @@
+<form [formGroup]="form">
+  <div>
+    <mat-form-field>
+      <mat-label>Name</mat-label>
+      <input formControlName="name"
+            matInput
+            type="text">
+    </mat-form-field>
+
+    <mat-form-field>
+      <mat-label>Description</mat-label>
+      <textarea formControlName="description"
+                matInput
+                type="text">
+      </textarea>
+    </mat-form-field>
+    <mat-checkbox
+                  formControlName="actived"
+                  [labelPosition]="'before'"> Actived
+    </mat-checkbox>
+  </div>
+</form>

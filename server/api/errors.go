@@ -11,6 +11,7 @@ var (
 
 // Error ...
 type Error struct {
-	Status int
+	Status   int
+	Location string
 	error
 }

@@ -1,0 +1,17 @@
+<form [formGroup]="form">
+  <mat-form-field>
+    <input  type="text"
+            placeholder="ADUser"
+            matInput
+            formControlName="username"
+            [matAutocomplete]="auto">
+    <mat-autocomplete #auto="matAutocomplete"
+                      [displayWith]="displayUser"
+                      (optionSelected)="onSelectUser($event)">
+      <mat-option *ngFor="let option of users"
+                  [value]="option">
+        {{option.Username}}
+      </mat-option>
+    </mat-autocomplete>
+  </mat-form-field>
+</form>
