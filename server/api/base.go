@@ -10,17 +10,23 @@ import (
 
 	"github.com/gorilla/mux"
 
+	"github.com/mdiazp/gm/server/conf"
 	dbH "github.com/mdiazp/gm/server/db/handlers"
 	"github.com/mdiazp/gm/server/db/models"
+	"github.com/mdiazp/gm/server/usersprovider"
 )
 
 // Base ...
 type Base interface {
 	DB() dbH.Handler
 	Logger() *log.Logger
+
 	JWTHandler() JWTHandler
 	PublicFolderPath() string
 	GetEnv() string
+
+	GetUsersProvider(provider UserProvider) usersprovider.Provider
+	GetUsersProviderNames() []UserProvider
 
 	ReadJSON(w http.ResponseWriter, r *http.Request, objs ...interface{})
 
@@ -43,16 +49,19 @@ type Base interface {
 }
 
 // NewBase ...
-func NewBase(db dbH.Handler, logFile *os.File, jwth JWTHandler, publicFolderPath string, env string) Base {
+func NewBase(db dbH.Handler, logFile *os.File, jwth JWTHandler, adConfig conf.ADConfig,
+	publicFolderPath string, env string) Base {
 	return &base{
 		db:               db,
 		logger:           NewLogger(logFile),
 		publicFolderPath: publicFolderPath,
 		jwth:             jwth,
 		env:              env,
+		adConfig:         adConfig,
 	}
 }
 
+// Valid ...
 type Valid interface {
 	Valid() error
 }
@@ -65,6 +74,7 @@ type base struct {
 	jwth             JWTHandler
 	publicFolderPath string
 	env              string
+	adConfig         conf.ADConfig
 }
 
 func (b *base) DB() dbH.Handler {

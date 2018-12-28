@@ -40,5 +40,5 @@ func (c *providersController) GetAccess() controllers.Permission {
 
 // ServeHTTP ...
 func (c *providersController) ServeHTTP(w http.ResponseWriter, r *http.Request) {
-	c.WR(w, 200, api.GetUsersProviderNames())
+	c.WR(w, 200, c.GetUsersProviderNames())
 }

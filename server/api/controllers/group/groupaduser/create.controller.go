@@ -49,7 +49,7 @@ func (c *createController) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 	groupID := c.GetPInt(w, r, "id")
 	aduser := c.GetPString(w, r, "aduser")
 
-	provider := api.GetUsersProvider(c, api.UserProviderAD)
+	provider := c.GetUsersProvider(api.UserProviderAD)
 	if provider == nil {
 		c.WE(w, fmt.Errorf("Unknowed Provider: %s", api.UserProviderAD), 500)
 	}

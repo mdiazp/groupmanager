@@ -43,10 +43,10 @@ func (c *createController) GetAccess() controllers.Permission {
 
 // ServeHTTP ...
 func (c *createController) ServeHTTP(w http.ResponseWriter, r *http.Request) {
-	var u UserToPost
+	var u ToPost
 	c.ReadJSON(w, r, &u)
 
-	provider := api.GetUsersProvider(c, (api.UserProvider)(u.Provider))
+	provider := c.GetUsersProvider((api.UserProvider)(u.Provider))
 	if provider == nil {
 		c.WE(w, fmt.Errorf("Unknowed Provider: %s", u.Provider), 404)
 	}
@@ -72,8 +72,8 @@ func (c *createController) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 	c.WR(w, 200, user)
 }
 
-// UserToPost ...
-type UserToPost struct {
+// ToPost ...
+type ToPost struct {
 	Username string
 	Provider string
 }

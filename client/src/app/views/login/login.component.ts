@@ -37,9 +37,9 @@ export class LoginComponent implements OnInit {
   }
 
   initForm() {
-    this.username = new FormControl('kino', Validators.required);
-    this.password = new FormControl('123', Validators.required);
-    this.provider = new FormControl('xxx', Validators.required);
+    this.username = new FormControl('', Validators.required);
+    this.password = new FormControl('', Validators.required);
+    this.provider = new FormControl('', Validators.required);
 
     this.loginForm = new FormGroup({
       'username': this.username,

@@ -60,7 +60,7 @@ func main() {
 	}
 
 	// ApiBase
-	apiBase = api.NewBase(db, logFile, jwth, config.PublicFolderPath, environment)
+	apiBase = api.NewBase(db, logFile, jwth, config.ADConfig, config.PublicFolderPath, environment)
 	router := routes.Router(apiBase)
 
 	fmt.Println("Running at " + config.Host + ":" + config.Port)

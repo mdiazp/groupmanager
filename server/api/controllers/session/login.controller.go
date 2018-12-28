@@ -50,12 +50,15 @@ func (c *loginController) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 	c.ReadJSON(w, r, &cred)
 
 	// Authenticate
-	provider := api.GetUsersProvider(c, (api.UserProvider)(cred.Provider))
+	provider := c.GetUsersProvider((api.UserProvider)(cred.Provider))
 	if provider == nil {
 		c.WE(w, fmt.Errorf("Unknowed Provider: %s", cred.Provider), 401)
 	}
+
 	e := provider.Authenticate(cred.Username, cred.Password)
-	c.WE(w, e, 401)
+	if e != nil {
+		c.WE(w, fmt.Errorf("Invalid Credentials"), 401)
+	}
 
 	//Check User be registered
 	var user models.User

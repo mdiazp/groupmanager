@@ -2,6 +2,7 @@ package api
 
 import (
 	"github.com/mdiazp/gm/server/usersprovider"
+	"github.com/mdiazp/gm/server/usersprovider/ldap"
 	"github.com/mdiazp/gm/server/usersprovider/xxx"
 )
 
@@ -16,12 +17,13 @@ const (
 )
 
 // GetUsersProviderNames ...
-func GetUsersProviderNames() []UserProvider {
-	return []UserProvider{UserProviderXXX, UserProviderAD}
+func (b *base) GetUsersProviderNames() []UserProvider {
+	// return []UserProvider{UserProviderXXX, UserProviderAD}
+	return []UserProvider{UserProviderAD}
 }
 
 // GetUsersProvider ...
-func GetUsersProvider(b Base, provider UserProvider) usersprovider.Provider {
+func (b *base) GetUsersProvider(provider UserProvider) usersprovider.Provider {
 	switch provider {
 	case UserProviderXXX:
 		if b.GetEnv() == "dev" {
@@ -30,9 +32,17 @@ func GetUsersProvider(b Base, provider UserProvider) usersprovider.Provider {
 		return nil
 	case UserProviderAD:
 		if b.GetEnv() == "dev" {
-			return xxx.GetProvider()
+			return ldap.GetProvider(b.adConfig.AdAddress,
+				b.adConfig.AdSuff,
+				b.adConfig.AdBDN,
+				b.adConfig.AdUser,
+				b.adConfig.AdPassword)
 		}
-		return nil
+		return ldap.GetProvider(b.adConfig.AdAddress,
+			b.adConfig.AdSuff,
+			b.adConfig.AdBDN,
+			b.adConfig.AdUser,
+			b.adConfig.AdPassword)
 	default:
 		return nil
 	}
