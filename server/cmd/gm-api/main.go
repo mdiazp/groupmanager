@@ -53,11 +53,11 @@ func main() {
 	}
 	logFile.Close()
 	logFile, e = os.OpenFile(config.LogsDirectory+"/logs.log", os.O_RDWR|os.O_APPEND, 0660)
-	defer logFile.Close()
 	if e != nil {
 		log.Fatalf("Fail at open log file: %s", e.Error())
 		panic(e)
 	}
+	defer logFile.Close()
 
 	// ApiBase
 	apiBase = api.NewBase(db, logFile, jwth, config.ADConfig, config.PublicFolderPath, environment)
