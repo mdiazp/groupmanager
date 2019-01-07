@@ -1,8 +1,6 @@
 package handlers
 
 import (
-	"fmt"
-
 	"github.com/jinzhu/gorm"
 	"github.com/mdiazp/gm/server/db/models"
 )
@@ -51,7 +49,6 @@ func (h *handler) RetrieveGroupADUser(groupID uint, aduser string) error {
 func (h *handler) DeleteGroupADUser(groupID uint, aduser string) error {
 	db := h.DB.Where("group_id = ? AND aduser = ?", groupID, aduser)
 	db = db.Delete(models.GroupADUser{})
-	fmt.Println("SQL = ", db.QueryExpr())
 	e := db.Error
 	return e
 }
@@ -70,8 +67,6 @@ func (h *handler) RetrieveGroupADUserList(filter *GroupADUserFilter, orderBy *Or
 			"group_aduser.id, group_aduser.aduser, group_aduser.adname, " +
 				"group_aduser.group_id, system_group.name").
 		Joins("left join system_group on group_aduser.group_id = system_group.id")
-
-	fmt.Println("SQL Query = ", db.QueryExpr())
 
 	rows, e := db.Rows()
 	if e != nil {
@@ -95,6 +90,5 @@ func (h *handler) CountGroupADUsers(filter *GroupADUserFilter) (count int, e err
 	db := h.DB.Model(&models.GroupADUser{})
 	db = makeGroupADUserFilter(db, filter)
 	e = db.Count(&count).Error
-	fmt.Println("SQL = ", db.QueryExpr())
 	return
 }

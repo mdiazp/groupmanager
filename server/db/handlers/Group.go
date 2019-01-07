@@ -1,8 +1,6 @@
 package handlers
 
 import (
-	"fmt"
-
 	"github.com/jinzhu/gorm"
 	"github.com/mdiazp/gm/server/db/models"
 )
@@ -51,7 +49,6 @@ func (h *handler) RetrieveGroupList(l *[]models.Group, filter *GroupFilter,
 	db := makeGroupFilter(h.DB, filter)
 	db = orderByAndPaginator(db, orderBy, pag, (models.Group{}).TableName())
 	db = db.Find(l)
-	fmt.Println("SQL Query = ", db.QueryExpr())
 	e := db.Error
 	return e
 }
@@ -72,7 +69,6 @@ func makeGroupFilter(db *gorm.DB, filter *GroupFilter) *gorm.DB {
 		db = db.Where("actived = ?", *(filter.Actived))
 	}
 
-	fmt.Println("AdminID filtering has to be doed by join to table group_admin")
 	if filter.AdminID != nil {
 		db = db.Where("id IN (?)",
 			db.Model(&models.GroupAdmin{}).

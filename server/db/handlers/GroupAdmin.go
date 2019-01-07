@@ -1,8 +1,6 @@
 package handlers
 
 import (
-	"fmt"
-
 	"github.com/jinzhu/gorm"
 	"github.com/mdiazp/gm/server/db/models"
 )
@@ -60,7 +58,6 @@ func (h *handler) RetrieveGroupAdmin(groupID uint, userID uint) error {
 func (h *handler) DeleteGroupAdmin(groupID uint, userID uint) error {
 	db := h.DB.Where("group_id = ? AND user_id = ?", groupID, userID)
 	db = db.Delete(models.GroupAdmin{})
-	fmt.Println("SQL = ", db.QueryExpr())
 	e := db.Error
 	return e
 }
@@ -81,8 +78,6 @@ func (h *handler) RetrieveGroupAdminList(filter *GroupAdminFilter,
 		Select(
 			"group_admin.id, group_admin.user_id, group_admin.group_id, " +
 				"system_user.username, system_group.name")
-
-	fmt.Println("	SQL Query = ", db.QueryExpr())
 
 	rows, e := db.Rows()
 	if e != nil {
@@ -108,6 +103,5 @@ func (h *handler) CountGroupAdmins(filter *GroupAdminFilter) (count int, e error
 	db = addJoin(db)
 	db = db.Count(&count)
 	e = db.Error
-	fmt.Println("	SQL = ", db.QueryExpr())
 	return
 }

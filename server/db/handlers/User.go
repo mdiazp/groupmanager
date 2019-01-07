@@ -1,8 +1,6 @@
 package handlers
 
 import (
-	"fmt"
-
 	"github.com/jinzhu/gorm"
 	"github.com/mdiazp/gm/server/db/models"
 )
@@ -84,7 +82,6 @@ func makeUserFilter(db *gorm.DB, filter *UserFilter) *gorm.DB {
 	if filter.Enabled != nil {
 		db = db.Where("enabled = ?", *(filter.Enabled))
 	}
-	fmt.Println("AdminID filtering has to be doed by join to table group_admin")
 	if filter.GroupWhichAdmin != nil {
 		db = db.Where("id IN (?)",
 			db.Model(&models.GroupAdmin{}).

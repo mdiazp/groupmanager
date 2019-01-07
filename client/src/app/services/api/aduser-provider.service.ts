@@ -10,18 +10,18 @@ import {
 import { BehaviorSubject, Observable, Operator } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { isNullOrUndefined } from 'util';
+import { APIService } from './api.service';
+import { SessionService } from '../session.service';
 
 @Injectable()
-export class ADUserProvider {
-  private bpath = 'http://api.gm.local:1234/btu';
-
-  constructor(protected http: Http) {}
+export class ADUserProvider extends APIService {
+  constructor(protected http: Http,
+              protected session: SessionService) {
+    super(http, session);
+  }
 
   public GetUsers(search: string): Observable<ADUserInfo[]> {
-    return this.http.get(`${this.bpath}/${search}`)
-    .pipe(
-      map(res => res.json()),
-    );
+    return this.get(`/btu/${search}`);
   }
 }
 
