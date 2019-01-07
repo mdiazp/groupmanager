@@ -24,8 +24,14 @@ export class FormGroupComponent implements OnInit {
   }
 
   initForm(): void {
-    this.nameControl = new FormControl(this.initialValues.Name, Validators.required);
-    this.descriptionControl = new FormControl(this.initialValues.Description, Validators.required);
+    this.nameControl = new FormControl(
+      this.initialValues.Name,
+      [Validators.required, Validators.maxLength(20)]
+    );
+    this.descriptionControl = new FormControl(
+      this.initialValues.Description,
+      [Validators.required, Validators.maxLength(500)],
+    );
     this.activedControl = new FormControl(this.initialValues.Actived, Validators.required);
     this.form = new FormGroup({
       'name': this.nameControl,
