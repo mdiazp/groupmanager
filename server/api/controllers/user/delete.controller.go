@@ -42,6 +42,8 @@ func (c *deleteController) GetAccess() controllers.Permission {
 func (c *deleteController) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 	id := (uint)(c.GetPInt(w, r, "id"))
 
+	verificateUserExistence(c, w, id)
+
 	e := c.DB().DeleteUser(id)
 	c.WE(w, e, 500)
 	c.WR(w, 204, "User was deleted successfully")

@@ -16,3 +16,12 @@ func readGroupADUserFilter(c api.Base, w http.ResponseWriter, r *http.Request) *
 	}
 	return f
 }
+
+func verificateGroupADUserExistence(c api.Base, w http.ResponseWriter,
+	groupID uint, aduser string) {
+	e := c.DB().RetrieveGroupADUser(groupID, aduser)
+	if e == dbhandlers.ErrRecordNotFound {
+		c.WE(w, e, 404)
+	}
+	c.WE(w, e, 500)
+}

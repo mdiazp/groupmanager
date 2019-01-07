@@ -46,6 +46,8 @@ func (c *updateController) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 	c.ReadJSON(w, r, &group)
 	group.ID = id
 
+	verificateGroupExistence(c, w, id)
+
 	c.Validate(w, group)
 
 	e := c.DB().UpdateGroup(id, &group)

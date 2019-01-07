@@ -16,3 +16,12 @@ func readGroupAdminFilter(c api.Base, w http.ResponseWriter, r *http.Request) *d
 	}
 	return f
 }
+
+func verificateGroupAdminExistence(c api.Base, w http.ResponseWriter,
+	groupID uint, userID uint) {
+	e := c.DB().RetrieveGroupAdmin(groupID, userID)
+	if e == dbhandlers.ErrRecordNotFound {
+		c.WE(w, e, 404)
+	}
+	c.WE(w, e, 500)
+}

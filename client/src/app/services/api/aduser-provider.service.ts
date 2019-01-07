@@ -13,12 +13,12 @@ import { isNullOrUndefined } from 'util';
 
 @Injectable()
 export class ADUserProvider {
-  private bpath = 'http://api.ad.local:1236';
+  private bpath = 'http://api.gm.local:1234/btu';
 
   constructor(protected http: Http) {}
 
   public GetUsers(search: string): Observable<ADUserInfo[]> {
-    return this.http.get(`${this.bpath}/users?search=${search}`)
+    return this.http.get(`${this.bpath}/${search}`)
     .pipe(
       map(res => res.json()),
     );

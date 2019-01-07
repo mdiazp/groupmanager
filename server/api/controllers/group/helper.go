@@ -60,3 +60,11 @@ func CheckGroupAdminAccessControl(c api.Base, w http.ResponseWriter, r *http.Req
 		c.WE(w, dbhandlers.ErrRecordNotFound, 404)
 	}
 }
+
+func verificateGroupExistence(c api.Base, w http.ResponseWriter, id uint) {
+	e := c.DB().RetrieveGroupByID(id, &models.Group{})
+	if e == dbhandlers.ErrRecordNotFound {
+		c.WE(w, e, 404)
+	}
+	c.WE(w, e, 500)
+}

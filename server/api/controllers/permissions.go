@@ -45,6 +45,9 @@ const (
 	PermissionUpdateGroupADUser Permission = "UpdateGroupADUser"
 	// PermissionDeleteGroupADUser ...
 	PermissionDeleteGroupADUser Permission = "DeleteGroupADUser"
+
+	// PermissionRetrieveBTU ...
+	PermissionRetrieveBTU Permission = "PermissionRetrieveBTU"
 )
 
 func addSessionPerms(ps *Permissions) {

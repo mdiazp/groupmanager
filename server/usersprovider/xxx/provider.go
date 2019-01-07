@@ -2,6 +2,7 @@ package xxx
 
 import (
 	"errors"
+	"fmt"
 
 	"github.com/mdiazp/gm/server/usersprovider"
 )
@@ -21,6 +22,11 @@ func (p *provider) GetUserRecords(username string) (usersprovider.UserRecords, e
 		Username: username,
 		Name:     username,
 	}, nil
+}
+
+func (p *provider) GetFirst10BestUsernamePrefixMatchs(
+	usernamePrefix string) (*[]usersprovider.UserRecords, error) {
+	return nil, fmt.Errorf("Not Implemented")
 }
 
 // GetProvider ...

@@ -9,6 +9,7 @@ import (
 
 	"github.com/mdiazp/gm/server/api"
 	"github.com/mdiazp/gm/server/api/controllers"
+	"github.com/mdiazp/gm/server/api/controllers/btu"
 	"github.com/mdiazp/gm/server/api/controllers/group"
 	"github.com/mdiazp/gm/server/api/controllers/group/groupadmin"
 	"github.com/mdiazp/gm/server/api/controllers/group/groupaduser"
@@ -54,6 +55,8 @@ func Router(base api.Base) http.Handler {
 		groupaduser.NewRetrieveListController(base),
 		groupaduser.NewCountController(base),
 		groupaduser.NewDeleteController(base),
+
+		btu.NewRetrieveBTUController(base),
 	}
 
 	router := mux.NewRouter()

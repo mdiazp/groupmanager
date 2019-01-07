@@ -10,4 +10,6 @@ type UserRecords struct {
 type Provider interface {
 	Authenticate(username, password string) (e error)
 	GetUserRecords(username string) (UserRecords, error)
+	GetFirst10BestUsernamePrefixMatchs(
+		usernamePrefix string) (*[]UserRecords, error)
 }

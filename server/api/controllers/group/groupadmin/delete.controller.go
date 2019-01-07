@@ -43,6 +43,8 @@ func (c *deleteController) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 	groupID := c.GetPInt(w, r, "id")
 	userID := c.GetPInt(w, r, "userID")
 
+	verificateGroupAdminExistence(c, w, (uint)(groupID), (uint)(userID))
+
 	e := c.DB().DeleteGroupAdmin((uint)(groupID), (uint)(userID))
 
 	c.WE(w, e, 500)

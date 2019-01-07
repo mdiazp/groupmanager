@@ -57,9 +57,65 @@ func NewLdapWithAcc(addr, sf, bDN, user,
 	return
 }
 
+// FullRecordAcc ...
 func (l *Ldap) FullRecordAcc(usr string) (m map[string][]string,
 	e error) {
 	m, e = l.FullRecord(l.User, l.Pass, usr)
+	return
+}
+
+// FullRecordsBest10Matchs Gets the best 10 fullRecords so that
+// their sAMAccountName prefix match with pattern
+func (l *Ldap) FullRecordsBest10Matchs(
+	pattern string) (rs []map[string][]string, e error) {
+	var entries []*ldap.Entry
+	var filter string
+	var atts []string
+	filter, atts =
+		fmt.Sprintf("(&(objectClass=user)(sAMAccountName=%s*))",
+			pattern),
+		[]string{}
+
+	entries, e = l.SearchPage(filter, atts, 10)
+	if e != nil {
+		return
+	}
+
+	rs = make([]map[string][]string, 0)
+	for _, entry := range entries {
+		m := make(map[string][]string)
+		for _, atr := range entry.Attributes {
+			m[atr.Name] = atr.Values
+		}
+		rs = append(rs, m)
+	}
+	return
+}
+
+// SearchPage ...
+func (l *Ldap) SearchPage(f string, ats []string,
+	pagingSize uint32) (n []*ldap.Entry, e error) {
+	paging := ldap.NewControlPaging(pagingSize)
+	var (
+		scope = ldap.ScopeWholeSubtree
+		deref = ldap.NeverDerefAliases
+		sizel = 0
+		timel = 0
+		tpeol = false                  //TypesOnly
+		conts = []ldap.Control{paging} //[]Control
+	)
+	s := ldap.NewSearchRequest(l.BaseDN, scope, deref,
+		sizel, timel, tpeol, f, ats, conts)
+	var c *ldap.Conn
+	c, e = l.newConn(l.User, l.Pass)
+	var r *ldap.SearchResult
+	if e == nil {
+		r, e = c.Search(s)
+		c.Close()
+	}
+	if e == nil {
+		n = r.Entries
+	}
 	return
 }
 
@@ -85,6 +141,7 @@ func (l *Ldap) Authenticate(u, p string) (e error) {
 	return
 }
 
+// AuthAndNorm ...
 func (l *Ldap) AuthAndNorm(u, p string) (user string, e error) {
 	e = l.Authenticate(u, p)
 	if e == nil {
@@ -156,6 +213,7 @@ func (l *Ldap) FullName(mp map[string][]string) (m string,
 	return
 }
 
+// GetAccountName ...
 func (l *Ldap) GetAccountName(mp map[string][]string) (r string,
 	e error) {
 	vls, ok := mp[SAMAccountName]

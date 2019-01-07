@@ -357,6 +357,30 @@ paths:
           description: Forbidden
         '500':
           description: Internal Server Error
+
+  /btu/{usernamePrefix}:
+    get:
+      tags:
+        - btu
+      parameters:
+        - $ref: '#/parameters/authToken'
+        - $ref: '#/parameters/btu.usernamePrefix.inpath'
+      responses:
+        responses:
+        '200':
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/btuUser'
+        '400':
+          description: Bad Request
+        '403':
+          description: Forbidden
+        '404':
+          description: Not Found
+        '500':
+          description: Internal Server Error
+
 definitions:
   credentials:
     properties:
@@ -480,6 +504,16 @@ definitions:
         format: interger
         type: integer
     type: object
+
+  btuUser:
+    properties:
+      Username:
+        format: character varying
+        type: string
+      Name:
+        format: character varying
+        type: string
+
 parameters:
   offset:
     name: offset
@@ -631,3 +665,10 @@ parameters:
     schema:
       $ref: '#/definitions/groupadminToPost'
     in: body
+
+  btu.usernamePrefix.inpath:
+    name: usernamePrefix
+    description: usernamePrefix
+    required: true
+    in: path
+    type: string

@@ -46,6 +46,8 @@ func (c *deleteController) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 	groupID := c.GetPInt(w, r, "id")
 	aduser := c.GetPString(w, r, "aduser")
 
+	verificateGroupADUserExistence(c, w, (uint)(groupID), aduser)
+
 	e := c.DB().DeleteGroupADUser((uint)(groupID), aduser)
 
 	c.WE(w, e, 500)
