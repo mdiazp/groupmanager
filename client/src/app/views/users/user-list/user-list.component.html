@@ -23,7 +23,7 @@
                   <input #nameFilter matInput placeholder="Name"> </mat-form-field>
 
               <mat-form-field>
-                <mat-select #rolFilter placeholder="Rol">
+                <mat-select #rolFilter placeholder="Rol" [value]="'all'">
                   <mat-option [value]="'all'">
                     all
                   </mat-option>
@@ -37,7 +37,7 @@
               </mat-form-field>
 
               <mat-form-field>
-                  <mat-select #enabledFilter placeholder="Enabled">
+                  <mat-select #enabledFilter placeholder="Enabled" [value]="'all'">
                     <mat-option [value]="'all'">
                       all
                     </mat-option>

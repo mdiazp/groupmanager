@@ -18,7 +18,7 @@
               <mat-form-field>
                   <input #nameFilter matInput placeholder="Name"> </mat-form-field>
               <mat-form-field>
-                  <mat-select #activedFilter placeholder="Actived">
+                  <mat-select #activedFilter placeholder="Actived" [value]="true">
                     <mat-option [value]="'all'">
                       all
                     </mat-option>
