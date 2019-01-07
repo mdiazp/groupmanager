@@ -36,8 +36,7 @@ func (c *retrieveBTUController) GetMethods() []string {
 
 // GetAccess ...
 func (c *retrieveBTUController) GetAccess() controllers.Permission {
-	return ""
-	//return controllers.PermissionRetrieveBTU
+	return controllers.PermissionRetrieveBTU
 }
 
 // ServeHTTP ...

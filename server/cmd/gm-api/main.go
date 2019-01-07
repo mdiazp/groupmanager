@@ -46,13 +46,11 @@ func main() {
 	jwth := api.NewJWTHandler(&config.JWTConfig)
 
 	// LogFile
-	logFile, e = os.Create(config.LogsDirectory + "/logs.log")
-	if e != nil {
-		log.Fatalf("Fail at create log file: %s", e.Error())
-		panic(e)
-	}
-	logFile.Close()
-	logFile, e = os.OpenFile(config.LogsDirectory+"/logs.log", os.O_RDWR|os.O_APPEND, 0660)
+	tim := time.Now()
+	pln := fmt.Sprintf("%d-%02d-%02dT%02d-%02d-%02d",
+		tim.Year(), tim.Month(), tim.Day(),
+		tim.Hour(), tim.Minute(), tim.Second())
+	logFile, e = os.OpenFile(config.LogsDirectory+"/"+pln+"-gm-logs.log", os.O_RDWR|os.O_CREATE|os.O_APPEND, 0660)
 	if e != nil {
 		log.Fatalf("Fail at open log file: %s", e.Error())
 		panic(e)

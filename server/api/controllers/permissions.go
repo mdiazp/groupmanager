@@ -77,6 +77,9 @@ func addGroupADUserPerms(ps *Permissions) {
 	*ps = append(*ps, PermissionUpdateGroupADUser)
 	*ps = append(*ps, PermissionDeleteGroupADUser)
 }
+func addBTUPerms(ps *Permissions) {
+	*ps = append(*ps, PermissionRetrieveBTU)
+}
 func readOnly(ps *Permissions) {
 	*ps = append(*ps, PermissionRetrieveUser)
 	*ps = append(*ps, PermissionRetrieveGroup)
@@ -89,6 +92,7 @@ func all(ps *Permissions) {
 	addGroupPerms(ps)
 	addGroupAdminPerms(ps)
 	addGroupADUserPerms(ps)
+	addBTUPerms(ps)
 }
 
 // Rol ...
@@ -112,6 +116,7 @@ func GetPermissions(rol Rol) Permissions {
 	case RolUser:
 		addSessionPerms(ps)
 		addGroupADUserPerms(ps)
+		addBTUPerms(ps)
 		*ps = append(*ps, PermissionRetrieveGroup)
 	case RolReadOnly:
 		readOnly(ps)
