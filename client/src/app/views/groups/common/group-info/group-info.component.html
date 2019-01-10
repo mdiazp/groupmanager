@@ -1,20 +1,23 @@
 <div class="showone-tab-item-wrapper">
-  <div>
-    <b>Id:</b> <span>{{group.ID}}</span>
-  </div>
-  <div>
-    <b>Name:</b> <span>{{group.Name}}</span>
-  </div>
-  <div>
-    <b>Description:</b>
-    <pre>{{group.Description}}</pre>
-  </div>
-  <div>
-    <mat-checkbox [labelPosition]="'before'"
-                  [disabled]="true"
-                  [checked]="group.Actived"> Actived
-    </mat-checkbox>
-  </div>
+    <div>
+        <b><strong>ID</strong></b> <br/>
+        <span>{{group.ID}}</span>
+    </div>
+    <br/>
+    <div>
+        <b><strong>Name</strong></b> <br/>
+        <span>{{group.Name}}</span>
+    </div>
+    <br/>
+    <div>
+        <b><strong>Description</strong></b> <br/>
+        <span>{{group.Description}}</span>
+    </div>
+    <br/>
+    <div>
+        <b><strong>Actived</strong></b> <br/>
+        <span>{{(group.Actived ? 'Yes' : 'No')}}</span>
+      </div>
 
   <div style="height: 20px; width: 100%;"></div>
 

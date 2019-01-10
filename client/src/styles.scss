@@ -116,3 +116,19 @@ a {
     width: 100%;
   }
 }
+
+////////////////////////////////////////////////////////////////////////
+
+.table-scrollable-horizontal-container {
+  min-width: 400px;
+  overflow: auto;
+}
+
+.table-delete-operation-column {
+  // width: 10%;
+  flex: 0 1 auto;
+}
+
+.table-not-grow-column {
+  flex: 0 1 auto;
+}

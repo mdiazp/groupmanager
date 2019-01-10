@@ -31,7 +31,7 @@ export class GroupListComponent implements OnInit, AfterViewInit {
   groups: Group[] = [];
   dataSource: GroupsDataSource;
   // displayedColumns= ['id', 'name', 'description', 'actived', 'operations'];
-  displayedColumns= ['id', 'name', 'operations'];
+  displayedColumns= ['name', 'operations'];
 
 
   @ViewChild(MatSort) sort: MatSort;

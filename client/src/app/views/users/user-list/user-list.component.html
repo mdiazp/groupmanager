@@ -52,7 +52,8 @@
           </mat-expansion-panel>
       </mat-accordion>
 
-      <section class="list-table list-wrapper-item">
+      <section class="list-table list-wrapper-item
+                      table-scrollable-horizontal-container">
         <mat-table [dataSource]="dataSource" class="mat-elevation-z8"
               matSort matSortActive="id" matSortDirection="asc" matSortDisableClear>
 
@@ -81,8 +82,7 @@
 
             <ng-container matColumnDef="rol">
               <mat-header-cell *matHeaderCellDef mat-sort-header>Rol</mat-header-cell>
-              <mat-cell class="rol-cell"
-                        *matCellDef="let g">
+              <mat-cell *matCellDef="let g">
                   {{g.Rol}}
               </mat-cell>
             </ng-container>
@@ -97,8 +97,10 @@
             </ng-container>
 
             <ng-container matColumnDef="operations">
-                <mat-header-cell *matHeaderCellDef>Operations</mat-header-cell>
-                <mat-cell class="operations-cell"
+                <mat-header-cell *matHeaderCellDef
+                                 class="table-delete-operation-column">Delete
+                </mat-header-cell>
+                <mat-cell class="operations-cell table-delete-operation-column"
                           *matCellDef="let xu">
                   <button mat-icon-button (click)="this.onDelete(xu.ID, xu.Username)">
                       <mat-icon aria-label="Delete" color="warn">delete</mat-icon>

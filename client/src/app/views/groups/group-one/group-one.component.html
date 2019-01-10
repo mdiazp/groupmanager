@@ -1,36 +1,38 @@
 <mat-card>
-  <mat-card-header *ngIf="!(loading$ | async)">
-    <mat-card-title style="color: #1e88e5;">
-      Group: {{group.Name}}
-    </mat-card-title>
-  </mat-card-header>
   <mat-card-content>
-    <mat-tab-group *ngIf="!(loading$ | async)">
-      <mat-tab>
-        <ng-template mat-tab-label>
-            <mat-icon class="showone-tab-icon">info</mat-icon>
-            Info
-        </ng-template>
-        <app-group-info class="group-one-item" [group]="group">
-        </app-group-info>
-      </mat-tab>
-      <mat-tab [disabled]="!enableSettings()">
-        <ng-template mat-tab-label>
-          <mat-icon class="showone-tab-icon">settings</mat-icon>
-          Settings
-        </ng-template>
-        <app-group-settings *ngIf="enableSettings()"
-                            class="group-one-item"
-                            [group]="this.group"></app-group-settings>
-      </mat-tab>
-      <mat-tab [disabled]="!enableAdminList()">
-        <ng-template mat-tab-label>
-          <mat-icon class="showone-tab-icon">lock_open</mat-icon>
-          Access
-        </ng-template>
-        <app-group-admin-list *ngIf="enableAdminList()"
-                              [group]="this.group"></app-group-admin-list>
-      </mat-tab>
-    </mat-tab-group>
+    <section class="list-wrapper" *ngIf="!(loading$ | async)">
+        <header class="list-header list-wrapper-item">
+            <span class="list-header-title">
+              <mat-icon>group</mat-icon><span>{{group.Name}}</span>
+            </span>
+        </header>
+        <mat-tab-group *ngIf="!(loading$ | async)">
+          <mat-tab>
+            <ng-template mat-tab-label>
+                <mat-icon class="showone-tab-icon">info</mat-icon>
+                Info
+            </ng-template>
+            <app-group-info class="group-one-item" [group]="group">
+            </app-group-info>
+          </mat-tab>
+          <mat-tab [disabled]="!enableSettings()">
+            <ng-template mat-tab-label>
+              <mat-icon class="showone-tab-icon">settings</mat-icon>
+              Settings
+            </ng-template>
+            <app-group-settings *ngIf="enableSettings()"
+                                class="group-one-item"
+                                [group]="this.group"></app-group-settings>
+          </mat-tab>
+          <mat-tab [disabled]="!enableAdminList()">
+            <ng-template mat-tab-label>
+              <mat-icon class="showone-tab-icon">lock_open</mat-icon>
+              Access
+            </ng-template>
+            <app-group-admin-list *ngIf="enableAdminList()"
+                                  [group]="this.group"></app-group-admin-list>
+          </mat-tab>
+        </mat-tab-group>
+    </section>
   </mat-card-content>
 </mat-card>

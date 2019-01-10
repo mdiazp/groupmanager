@@ -30,7 +30,7 @@ export class UserListComponent implements OnInit, AfterViewInit {
 
   users: User[] = [];
   dataSource: UsersDataSource;
-  displayedColumns= ['id', 'username', 'name', 'rol', 'operations'];
+  displayedColumns= ['username', 'name', 'rol', 'operations'];
 
   @ViewChild(MatSort) sort: MatSort;
   @ViewChild(MatPaginator) paginator: MatPaginator;

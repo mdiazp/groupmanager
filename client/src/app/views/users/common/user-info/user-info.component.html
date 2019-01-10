@@ -1,20 +1,21 @@
 <div class="showone-tab-item-wrapper">
   <div>
-    <b>Id:</b> <span>{{user.ID}}</span>
+      <b><strong>Username</strong></b> <br/>
+      <span>{{user.Username}}</span>
   </div>
+  <br/>
   <div>
-    <b>Username:</b> <span>{{user.Username}}</span>
+      <b><strong>Name</strong></b> <br/>
+      <span>{{user.Name}}</span>
   </div>
+  <br/>
   <div>
-    <b>Name:</b> <span>{{user.Name}}</span>
+      <b><strong>Rol</strong></b> <br/>
+      <span>{{user.Rol}}</span>
   </div>
+  <br/>
   <div>
-    <b>Rol:</b> <span>{{user.Rol}}</span>
-  </div>
-  <div>
-    <mat-checkbox [labelPosition]="'before'"
-                  [disabled]="true"
-                  [checked]="user.Enabled"> Actived
-    </mat-checkbox>
+    <b><strong>Enabled</strong></b> <br/>
+    <span>{{(user.Enabled ? 'Yes' : 'No')}}</span>
   </div>
 </div>

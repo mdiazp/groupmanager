@@ -22,8 +22,10 @@
       </ng-container>
 
       <ng-container matColumnDef="operations">
-          <mat-header-cell *matHeaderCellDef>Operations</mat-header-cell>
-          <mat-cell class="operations-cell"
+          <mat-header-cell *matHeaderCellDef
+                            class="table-delete-operation-column">Delete
+          </mat-header-cell>
+          <mat-cell class="operations-cell table-delete-operation-column"
                     *matCellDef="let ga">
             <button mat-icon-button (click)="this.onDelete(ga.UserID, ga.Username)">
                 <mat-icon aria-label="Delete" color="warn">delete</mat-icon>
