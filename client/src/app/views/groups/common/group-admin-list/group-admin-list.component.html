@@ -14,6 +14,19 @@
 
   <br/>
 
+  <mat-accordion class="list-filter-accordion list-wrapper-item">
+    <mat-expansion-panel>
+        <mat-expansion-panel-header>
+            <mat-panel-title> Filter </mat-panel-title>
+        </mat-expansion-panel-header>
+        <mat-form-field>
+            <input #usernamePrefixFilter matInput placeholder="Username (Prefix)">
+        </mat-form-field>
+    </mat-expansion-panel>
+  </mat-accordion>
+
+  <br/>
+
   <mat-table [dataSource]="dataSource" class="mat-elevation-z8">
 
       <ng-container matColumnDef="username">

@@ -38,6 +38,9 @@ func makeGroupAdminFilter(db *gorm.DB, filter *GroupAdminFilter) *gorm.DB {
 	if filter.GroupActived != nil {
 		db = db.Where("system_group.actived = ?", *(filter.GroupActived))
 	}
+	if filter.UsernamePrefix != nil {
+		db = db.Where("system_user.username ILIKE ?", *(filter.UsernamePrefix)+"%")
+	}
 
 	return db
 }

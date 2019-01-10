@@ -66,12 +66,20 @@ export class APIGroupService extends APIService {
     return this.delete(`/group/${groupID}/admins/${userID}`, null);
   }
 
-  public GetGroupAdmins(groupID: number, paginator: Paginator): Observable<GroupAdmin[]> {
-    return this.get(`/group/${groupID}/admins`, { params: paginator.GetUSP() });
+  public GetGroupAdmins(groupID: number, filter?: GroupAdminFilter): Observable<GroupAdmin[]> {
+    if ( filter && filter !== null ) {
+      return this.get(`/group/${groupID}/admins`, { params: filter.GetUSP() });
+    } else {
+      return this.get(`/group/${groupID}/admins`);
+    }
   }
 
-  public GetGroupAdminsCount(groupID: number): Observable<number> {
-    return this.get(`/group/${groupID}/adminscount`);
+  public GetGroupAdminsCount(groupID: number, filter?: GroupAdminFilter): Observable<number> {
+    if ( filter && filter !== null ) {
+      return this.get(`/group/${groupID}/adminscount`, { params: filter.GetUSP() });
+    } else {
+      return this.get(`/group/${groupID}/adminscount`);
+    }
   }
 
   public PutGroupADUser(groupID: number, aduser: string): Observable<GroupADUser> {
@@ -140,6 +148,22 @@ export class GroupADUserFilter {
     let usp: URLSearchParams; usp = new URLSearchParams();
     if ( !isNullOrUndefined(this.ADUserPrefix) && this.ADUserPrefix !== '' ) {
       usp.append('adUserPrefix', this.ADUserPrefix);
+    }
+    if ( !isNullOrUndefined(this.paginator) ) {
+      usp.appendAll(this.paginator.GetUSP());
+    }
+    return usp;
+  }
+}
+
+export class GroupAdminFilter {
+  constructor(public usernamePrefix: string,
+              public paginator: Paginator) {}
+
+  public GetUSP(): URLSearchParams {
+    let usp: URLSearchParams; usp = new URLSearchParams();
+    if ( !isNullOrUndefined(this.usernamePrefix) && this.usernamePrefix !== '' ) {
+      usp.append('usernamePrefix', this.usernamePrefix);
     }
     if ( !isNullOrUndefined(this.paginator) ) {
       usp.appendAll(this.paginator.GetUSP());

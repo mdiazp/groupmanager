@@ -5,7 +5,7 @@ import {catchError, finalize} from 'rxjs/operators';
 import {of} from 'rxjs/observable/of';
 
 import {GroupAdmin} from '../../models/core';
-import {APIGroupService, Paginator} from '../api/core';
+import {APIGroupService, Paginator, GroupAdminFilter} from '../api/core';
 import {ErrorHandlerService} from '../error-handler.service';
 
 export class GroupAdminsDataSource implements DataSource<GroupAdmin> {
@@ -22,20 +22,20 @@ export class GroupAdminsDataSource implements DataSource<GroupAdmin> {
     constructor(private api: APIGroupService,
                 private eh: ErrorHandlerService) {}
 
-    load(loadCount: boolean, groupID: number, paginator: Paginator) {
+    load(loadCount: boolean, groupID: number, filter?: GroupAdminFilter) {
       this.loadingSubject.next(true);
       if ( loadCount ) {
-        this.loadCount(groupID, paginator);
+        this.loadCount(groupID, filter);
       } else {
-        this.loadGroupAdmins(groupID, paginator);
+        this.loadGroupAdmins(groupID, filter);
       }
     }
 
-    private loadCount(groupID: number, paginator: Paginator) {
-      this.api.GetGroupAdminsCount(groupID).subscribe(
+    private loadCount(groupID: number, filter?: GroupAdminFilter) {
+      this.api.GetGroupAdminsCount(groupID, filter).subscribe(
         count => {
           this.countSubject.next(count);
-          this.loadGroupAdmins(groupID, paginator);
+          this.loadGroupAdmins(groupID, filter);
         },
         (e) => {
           this.countSubject.next(0);
@@ -45,10 +45,10 @@ export class GroupAdminsDataSource implements DataSource<GroupAdmin> {
       );
     }
 
-    private loadGroupAdmins(groupID: number, paginator: Paginator) {
+    private loadGroupAdmins(groupID: number, filter?: GroupAdminFilter) {
       this.api.GetGroupAdmins(
         groupID,
-        paginator,
+        filter,
       ).subscribe(
         groupadmins => this.groupadminsSubject.next(groupadmins),
         (e) => {

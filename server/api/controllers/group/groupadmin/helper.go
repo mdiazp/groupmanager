@@ -9,10 +9,13 @@ import (
 )
 
 func readGroupAdminFilter(c api.Base, w http.ResponseWriter, r *http.Request) *dbhandlers.GroupAdminFilter {
+	usernamePrefix := c.GetQString(w, r, "usernamePrefix")
+
 	groupID := c.GetPInt(w, r, "id")
 	tmp := (uint)(groupID)
 	f := &dbhandlers.GroupAdminFilter{
-		GroupID: &tmp,
+		GroupID:        &tmp,
+		UsernamePrefix: usernamePrefix,
 	}
 	return f
 }

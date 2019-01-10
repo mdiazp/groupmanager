@@ -1,12 +1,20 @@
-import { Component, OnInit, Input, ViewChild, AfterViewInit } from '@angular/core';
+import { Component, OnInit, Input, ViewChild, AfterViewInit, ElementRef } from '@angular/core';
 import { Group, GroupAdmin } from '../../../../models/core';
-import { GroupAdminsDataSource, APIGroupService, ErrorHandlerService, FeedbackHandlerService, Paginator } from '../../../../services/core';
+import {
+  GroupAdminsDataSource,
+  APIGroupService,
+  ErrorHandlerService,
+  FeedbackHandlerService,
+  Paginator,
+  GroupAdminFilter
+} from '../../../../services/core';
 import { MatPaginator, MatDialog } from '@angular/material';
-import { tap } from 'rxjs/operators';
+import { tap, debounceTime, distinctUntilChanged } from 'rxjs/operators';
 import { CheckDeleteDialogComponent } from '../../../../dialogs/core';
 import { isNullOrUndefined } from 'util';
 import { UserSelectorComponent } from '../../../common/user-selector/user-selector.component';
 import { AdminSelectorDialogComponent } from '../admin-selector-dialog/admin-selector-dialog.component';
+import { fromEvent } from 'rxjs';
 
 @Component({
   selector: 'app-group-admin-list',
@@ -21,7 +29,7 @@ export class GroupAdminListComponent implements OnInit, AfterViewInit {
   // displayedColumns= ['id', 'name', 'description', 'actived', 'operations'];
   displayedColumns= ['username', 'operations'];
 
-
+  @ViewChild('usernamePrefixFilter') usernamePrefixFilter: ElementRef;
   @ViewChild(MatPaginator) paginator: MatPaginator;
 
   initialPageSize = 20;
@@ -37,14 +45,29 @@ export class GroupAdminListComponent implements OnInit, AfterViewInit {
       this.dataSource.load(
         true,
         this.group.ID,
-        new Paginator(
-          0,
-          this.initialPageSize,
+        new GroupAdminFilter(
+          null,
+          new Paginator(
+            0,
+            this.initialPageSize,
+          ),
         ),
       );
   }
 
   ngAfterViewInit(): void {
+    fromEvent(this.usernamePrefixFilter.nativeElement, 'keyup')
+    .pipe(
+        debounceTime(150),
+        distinctUntilChanged(),
+        tap(() => {
+            this.paginator.pageIndex = 0;
+            // this.paginator.page.emit();
+            this.load(true);
+        })
+    )
+    .subscribe();
+
     this.paginator.page
       .pipe(
         tap(() => this.load(false)),
@@ -105,9 +128,12 @@ export class GroupAdminListComponent implements OnInit, AfterViewInit {
     this.dataSource.load(
       loadCount,
       this.group.ID,
-      new Paginator(
-        this.paginator.pageIndex * this.paginator.pageSize,
-        this.paginator.pageSize
+      new GroupAdminFilter(
+        this.usernamePrefixFilter.nativeElement.value,
+        new Paginator(
+          this.paginator.pageIndex * this.paginator.pageSize,
+          this.paginator.pageSize
+        ),
       ),
     );
   }

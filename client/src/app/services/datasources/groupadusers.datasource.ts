@@ -32,7 +32,7 @@ export class GroupADUsersDataSource implements DataSource<GroupADUser> {
     }
 
     private loadCount(groupID: number, filter: GroupADUserFilter) {
-      this.api.GetGroupADUsersCount(groupID).subscribe(
+      this.api.GetGroupADUsersCount(groupID, filter).subscribe(
         count => {
           this.countSubject.next(count);
           this.loadGroupADUsers(groupID, filter);
