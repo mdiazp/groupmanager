@@ -82,12 +82,20 @@ export class APIGroupService extends APIService {
     return this.delete(`/group/${groupID}/adusers/${aduser}`, null);
   }
 
-  public GetGroupADUsers(groupID: number, paginator: Paginator): Observable<GroupADUser[]> {
-    return this.get(`/group/${groupID}/adusers`, { params: paginator.GetUSP() });
+  public GetGroupADUsers(groupID: number, filter?: GroupADUserFilter): Observable<GroupADUser[]> {
+    if ( filter && filter !== null ) {
+      return this.get(`/group/${groupID}/adusers`, { params: filter.GetUSP() });
+    } else {
+      return this.get(`/group/${groupID}/adusers`);
+    }
   }
 
-  public GetGroupADUsersCount(groupID: number): Observable<number> {
-    return this.get(`/group/${groupID}/aduserscount`);
+  public GetGroupADUsersCount(groupID: number, filter?: GroupADUserFilter): Observable<number> {
+    if ( filter && filter !== null ) {
+      return this.get(`/group/${groupID}/aduserscount`, { params: filter.GetUSP() });
+    } else {
+      return this.get(`/group/${groupID}/aduserscount`);
+    }
   }
 }
 
@@ -119,6 +127,22 @@ export class GroupFilter {
     }
     if ( !isNullOrUndefined(this.orderby) ) {
       usp.appendAll(this.orderby.GetUSP());
+    }
+    return usp;
+  }
+}
+
+export class GroupADUserFilter {
+  constructor(public ADUserPrefix: string,
+              public paginator: Paginator) {}
+
+  public GetUSP(): URLSearchParams {
+    let usp: URLSearchParams; usp = new URLSearchParams();
+    if ( !isNullOrUndefined(this.ADUserPrefix) && this.ADUserPrefix !== '' ) {
+      usp.append('adUserPrefix', this.ADUserPrefix);
+    }
+    if ( !isNullOrUndefined(this.paginator) ) {
+      usp.appendAll(this.paginator.GetUSP());
     }
     return usp;
   }

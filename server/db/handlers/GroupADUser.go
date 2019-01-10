@@ -18,8 +18,8 @@ type GroupADUserHandler interface {
 
 // GroupADUserFilter ...
 type GroupADUserFilter struct {
-	GroupID *uint
-	ADUser  *string
+	GroupID      *uint
+	ADUserPrefix *string
 }
 
 /////////////////////////////////////////////////////////////////////////////////////
@@ -30,8 +30,8 @@ func makeGroupADUserFilter(db *gorm.DB, filter *GroupADUserFilter) *gorm.DB {
 	if filter.GroupID != nil {
 		db = db.Where("group_aduser.group_id = ?", *(filter.GroupID))
 	}
-	if filter.ADUser != nil {
-		db = db.Where("group_aduser.aduser = ?", *(filter.ADUser))
+	if filter.ADUserPrefix != nil {
+		db = db.Where("group_aduser.aduser ILIKE ?", *(filter.ADUserPrefix)+"%")
 	}
 
 	return db

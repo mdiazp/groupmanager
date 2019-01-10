@@ -1,15 +1,18 @@
 <div class="showone-tab-item-wrapper">
-  <div class="user-selector-wrapper">
+
+  <br/>
+
+  <div style="display: flex;">
+    <span class="flex-space"></span>
     <button class="user-selector-button"
             mat-raised-button
             color="primary"
-            [disabled]="!userSelector.ValidSelection()"
             (click)="onNew()">
       <mat-icon>add</mat-icon>Add
     </button>
-    <span class="xxspace"></span>
-    <app-user-selector class="flex-space"></app-user-selector>
   </div>
+
+  <br/>
 
   <mat-table [dataSource]="dataSource" class="mat-elevation-z8">
 

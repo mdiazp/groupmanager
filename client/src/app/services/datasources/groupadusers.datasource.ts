@@ -5,7 +5,7 @@ import {catchError, finalize} from 'rxjs/operators';
 import {of} from 'rxjs/observable/of';
 
 import {GroupADUser} from '../../models/core';
-import {APIGroupService, Paginator} from '../api/core';
+import {APIGroupService, Paginator, GroupADUserFilter} from '../api/core';
 import {ErrorHandlerService} from '../error-handler.service';
 
 export class GroupADUsersDataSource implements DataSource<GroupADUser> {
@@ -22,20 +22,20 @@ export class GroupADUsersDataSource implements DataSource<GroupADUser> {
     constructor(private api: APIGroupService,
                 private eh: ErrorHandlerService) {}
 
-    load(loadCount: boolean, groupID: number, paginator: Paginator) {
+    load(loadCount: boolean, groupID: number, filter: GroupADUserFilter) {
       this.loadingSubject.next(true);
       if ( loadCount ) {
-        this.loadCount(groupID, paginator);
+        this.loadCount(groupID, filter);
       } else {
-        this.loadGroupADUsers(groupID, paginator);
+        this.loadGroupADUsers(groupID, filter);
       }
     }
 
-    private loadCount(groupID: number, paginator: Paginator) {
+    private loadCount(groupID: number, filter: GroupADUserFilter) {
       this.api.GetGroupADUsersCount(groupID).subscribe(
         count => {
           this.countSubject.next(count);
-          this.loadGroupADUsers(groupID, paginator);
+          this.loadGroupADUsers(groupID, filter);
         },
         (e) => {
           this.countSubject.next(0);
@@ -45,8 +45,8 @@ export class GroupADUsersDataSource implements DataSource<GroupADUser> {
       );
     }
 
-    private loadGroupADUsers(groupID: number, paginator: Paginator) {
-      this.api.GetGroupADUsers(groupID, paginator).subscribe(
+    private loadGroupADUsers(groupID: number, filter: GroupADUserFilter) {
+      this.api.GetGroupADUsers(groupID, filter).subscribe(
         groupADUsers => this.groupADUserSubject.next(groupADUsers),
         (e) => {
           this.groupADUserSubject.next([]);

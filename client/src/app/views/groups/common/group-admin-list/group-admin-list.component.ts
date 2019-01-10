@@ -6,6 +6,7 @@ import { tap } from 'rxjs/operators';
 import { CheckDeleteDialogComponent } from '../../../../dialogs/core';
 import { isNullOrUndefined } from 'util';
 import { UserSelectorComponent } from '../../../common/user-selector/user-selector.component';
+import { AdminSelectorDialogComponent } from '../admin-selector-dialog/admin-selector-dialog.component';
 
 @Component({
   selector: 'app-group-admin-list',
@@ -22,7 +23,6 @@ export class GroupAdminListComponent implements OnInit, AfterViewInit {
 
 
   @ViewChild(MatPaginator) paginator: MatPaginator;
-  @ViewChild(UserSelectorComponent) userSelector: UserSelectorComponent;
 
   initialPageSize = 20;
   pageSizeOptions = [20, 50, 100];
@@ -53,24 +53,27 @@ export class GroupAdminListComponent implements OnInit, AfterViewInit {
   }
 
   onNew(): void {
-    console.log('onNew');
-    this.api.PutGroupAdmin(
-      this.group.ID,
-      this.userSelector.autoUserSelection.ID
-    )
-    .subscribe(
-      (group) => {
-        console.log('New admin was inserted successfully');
-        this.fh.ShowFeedback('New admin was inserted successfully');
-        this.paginator.pageIndex = 0;
-        this.load(true);
+    const ref = this.dialog.open(AdminSelectorDialogComponent);
 
-        this.userSelector.Clear();
-      },
-      (e) => {
-        this.eh.HandleError(e);
+    ref.afterClosed().subscribe(result => {
+      if ( !isNullOrUndefined(result) && result !== 0 ) {
+        this.api.PutGroupAdmin(
+          this.group.ID,
+          result
+        )
+        .subscribe(
+          (group) => {
+            console.log('New admin was inserted successfully');
+            this.fh.ShowFeedback('New admin was inserted successfully');
+            this.paginator.pageIndex = 0;
+            this.load(true);
+          },
+          (e) => {
+            this.eh.HandleError(e);
+          }
+        );
       }
-    );
+    });
   }
 
   onDelete(userID: number, username: string): void {

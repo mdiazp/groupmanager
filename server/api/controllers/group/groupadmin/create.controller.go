@@ -55,7 +55,7 @@ func (c *createController) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 
 	e := c.DB().CreateGroupAdmin(&o)
 	if e != nil && strings.Contains(e.Error(), `"idx_system_user_group"`) {
-		c.WE(w, fmt.Errorf("Group with same name already exists"), 400)
+		c.WE(w, fmt.Errorf("Admin already exists"), 400)
 	}
 	c.WE(w, e, 500)
 	c.WR(w, 201, o)

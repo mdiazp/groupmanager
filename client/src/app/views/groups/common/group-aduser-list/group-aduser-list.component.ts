@@ -1,12 +1,20 @@
-import { Component, OnInit, Input, ViewChild, AfterViewInit, OnDestroy } from '@angular/core';
+import { Component, OnInit, Input, ViewChild, AfterViewInit, OnDestroy, ElementRef } from '@angular/core';
 import { Group, GroupADUser } from '../../../../models/core';
-import { GroupADUsersDataSource, APIGroupService, ErrorHandlerService, FeedbackHandlerService, Paginator } from '../../../../services/core';
+import {
+  GroupADUsersDataSource,
+  APIGroupService,
+  ErrorHandlerService,
+  FeedbackHandlerService,
+  Paginator,
+  GroupADUserFilter
+} from '../../../../services/core';
 import { MatPaginator, MatDialog } from '@angular/material';
-import { tap } from 'rxjs/operators';
+import { tap, debounceTime, distinctUntilChanged } from 'rxjs/operators';
 import { CheckDeleteDialogComponent } from '../../../../dialogs/core';
 import { isNullOrUndefined } from 'util';
 import { ADUserSelectorComponent } from '../../../common/ad-user-selector/ad-user-selector.component';
-import { Observable } from 'rxjs';
+import { Observable, fromEvent } from 'rxjs';
+import { ADUserSelectorDialogComponent } from '../aduser-selector-dialog/aduser-selector-dialog.component';
 
 @Component({
   selector: 'app-group-aduser-list',
@@ -21,9 +29,8 @@ export class GroupADUserListComponent implements OnInit, AfterViewInit, OnDestro
   // displayedColumns= ['id', 'name', 'description', 'actived', 'operations'];
   displayedColumns= ['aduser', 'adname', 'operations'];
 
-
+  @ViewChild('adUserPrefixFilter') adUserPrefixFilter: ElementRef;
   @ViewChild(MatPaginator) paginator: MatPaginator;
-  @ViewChild(ADUserSelectorComponent) ADUserSelector: ADUserSelectorComponent;
 
   initialPageSize = 20;
   pageSizeOptions = [20, 50, 100];
@@ -35,17 +42,33 @@ export class GroupADUserListComponent implements OnInit, AfterViewInit, OnDestro
 
   ngOnInit() {
     this.dataSource = new GroupADUsersDataSource(this.api, this.eh);
+    console.log('ngOnInit()');
     this.dataSource.load(
       true,
       this.group.ID,
-      new Paginator(
-        0,
-        this.initialPageSize,
+      new GroupADUserFilter(
+        null,
+        new Paginator(
+          0,
+          this.initialPageSize,
+        ),
       ),
     );
   }
 
   ngAfterViewInit(): void {
+    fromEvent(this.adUserPrefixFilter.nativeElement, 'keyup')
+            .pipe(
+                debounceTime(150),
+                distinctUntilChanged(),
+                tap(() => {
+                    this.paginator.pageIndex = 0;
+                    // this.paginator.page.emit();
+                    this.load(true);
+                })
+            )
+            .subscribe();
+
     this.paginator.page
       .pipe(
         tap(
@@ -58,27 +81,32 @@ export class GroupADUserListComponent implements OnInit, AfterViewInit, OnDestro
   }
 
   onNew(): void {
-    this.api.PutGroupADUser(
-      this.group.ID,
-      this.ADUserSelector.autoUserSelection.Username
-    )
-    .subscribe(
-      (group) => {
-        this.fh.ShowFeedback('The user was inserted on group successfully');
-        this.ADUserSelector.Clear();
-        this.paginator.pageIndex = 0;
-        this.load(true);
-      },
-      (e) => {
-        this.eh.HandleError(e);
+    const ref = this.dialog.open(ADUserSelectorDialogComponent);
+
+    ref.afterClosed().subscribe(result => {
+      if ( !isNullOrUndefined(result) && result !== '' ) {
+        this.api.PutGroupADUser(
+          this.group.ID,
+          result,
+        )
+        .subscribe(
+          (group) => {
+            this.fh.ShowFeedback('The user was inserted on group successfully');
+            this.paginator.pageIndex = 0;
+            this.load(true);
+          },
+          (e) => {
+            this.eh.HandleError(e);
+          }
+        );
       }
-    );
+    });
   }
 
   onDelete(aduser: string, adname: string): void {
     const dialogRef = this.dialog.open(CheckDeleteDialogComponent, {
       data: {
-        msg: `Are you shure to delete user ${aduser} - ${adname}?`,
+        msg: `Are you shure to remove user ${aduser} - ${adname} from this group?`,
       },
     });
 
@@ -103,9 +131,12 @@ export class GroupADUserListComponent implements OnInit, AfterViewInit, OnDestro
     this.dataSource.load(
       loadCount,
       this.group.ID,
-      new Paginator(
-        this.paginator.pageIndex * this.paginator.pageSize,
-        this.paginator.pageSize
+      new GroupADUserFilter(
+        this.adUserPrefixFilter.nativeElement.value,
+        new Paginator(
+          this.paginator.pageIndex * this.paginator.pageSize,
+          this.paginator.pageSize
+        ),
       ),
     );
   }

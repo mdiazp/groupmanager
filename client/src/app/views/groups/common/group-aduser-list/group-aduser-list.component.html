@@ -1,15 +1,28 @@
 <div class="aduser-list-wrapper">
-  <div class="user-selector-wrapper">
+  <div style="display: flex;">
+    <span class="flex-space"></span>
     <button class="user-selector-button"
             mat-raised-button
             color="primary"
-            [disabled]="!ADUserSelector.ValidSelection()"
             (click)="onNew()">
       <mat-icon>add</mat-icon>Add
     </button>
-    <span class="xxspace"></span>
-    <app-ad-user-selector class="flex-space"></app-ad-user-selector>
   </div>
+
+  <br/>
+
+  <mat-accordion class="list-filter-accordion list-wrapper-item">
+    <mat-expansion-panel>
+        <mat-expansion-panel-header>
+            <mat-panel-title> Filter </mat-panel-title>
+        </mat-expansion-panel-header>
+        <mat-form-field>
+            <input #adUserPrefixFilter matInput placeholder="Username (Prefix)">
+        </mat-form-field>
+    </mat-expansion-panel>
+  </mat-accordion>
+
+  <br/>
 
   <mat-table [dataSource]="dataSource">
 

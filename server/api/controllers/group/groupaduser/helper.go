@@ -9,10 +9,12 @@ import (
 )
 
 func readGroupADUserFilter(c api.Base, w http.ResponseWriter, r *http.Request) *dbhandlers.GroupADUserFilter {
+
 	groupID := c.GetPInt(w, r, "id")
 	tmp := (uint)(groupID)
 	f := &dbhandlers.GroupADUserFilter{
-		GroupID: &tmp,
+		GroupID:      &tmp,
+		ADUserPrefix: c.GetQString(w, r, "adUserPrefix"),
 	}
 	return f
 }

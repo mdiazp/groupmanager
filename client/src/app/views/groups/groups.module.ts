@@ -16,6 +16,8 @@ import { NewGroupDialogComponent } from './common/new-group-dialog/new-group-dia
 import { FormGroupComponent } from './common/form-group/form-group.component';
 import { GroupAdminListComponent } from './common/group-admin-list/group-admin-list.component';
 import { GroupADUserListComponent } from './common/group-aduser-list/group-aduser-list.component';
+import { ADUserSelectorDialogComponent } from './common/aduser-selector-dialog/aduser-selector-dialog.component';
+import { AdminSelectorDialogComponent } from './common/admin-selector-dialog/admin-selector-dialog.component';
 
 @NgModule({
   imports: [
@@ -37,9 +39,13 @@ import { GroupADUserListComponent } from './common/group-aduser-list/group-aduse
     FormGroupComponent,
     GroupAdminListComponent,
     GroupADUserListComponent,
+    ADUserSelectorDialogComponent,
+    AdminSelectorDialogComponent,
   ],
   entryComponents: [
     NewGroupDialogComponent,
+    ADUserSelectorDialogComponent,
+    AdminSelectorDialogComponent,
   ],
 })
 export class GroupsModule { }

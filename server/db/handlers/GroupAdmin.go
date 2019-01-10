@@ -18,9 +18,10 @@ type GroupAdminHandler interface {
 
 // GroupAdminFilter ...
 type GroupAdminFilter struct {
-	GroupID      *uint
-	GroupActived *bool
-	UserID       *uint
+	GroupID        *uint
+	GroupActived   *bool
+	UserID         *uint
+	UsernamePrefix *string
 }
 
 //////////////////////////////////////////////////////////////////////////////////
