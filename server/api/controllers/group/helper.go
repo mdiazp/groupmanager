@@ -14,6 +14,7 @@ func readGroupFilter(c api.Base, w http.ResponseWriter, r *http.Request) *dbhand
 	f := dbhandlers.GroupFilter{}
 	f.NameSubstr = c.GetQString(w, r, "nameSubstr", false)
 	f.Actived = c.GetQBool(w, r, "actived", false)
+	f.ADUser = c.GetQString(w, r, "aduser", false)
 
 	user := c.ContextReadAuthor(w, r)
 	if (controllers.Rol)(user.Rol) == controllers.RolUser {

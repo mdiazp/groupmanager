@@ -45,6 +45,8 @@ export class AccordionLinkDirective implements OnInit, OnDestroy {
   }
 
   toggle(): any {
-    this.selected = !this.selected;
+    if (!this.selected) {
+      this.selected = !this.selected;
+    }
   }
 }
