@@ -1,7 +1,6 @@
 package api
 
 import (
-	"crypto/rand"
 	"crypto/rsa"
 	"fmt"
 
@@ -21,20 +20,10 @@ type JWTHandler interface {
 	GetClaims(tokenString string) (*Claims, error)
 }
 
-// JWTConfig ...
-type JWTConfig interface {
-	GetSecret() string
-}
-
 // NewJWTHandler ...
-func NewJWTHandler(conf JWTConfig) JWTHandler {
-	pKey, e := rsa.GenerateKey(rand.Reader, 512)
-	if e != nil {
-		panic(e.Error())
-	}
+func NewJWTHandler(pkey *rsa.PrivateKey) JWTHandler {
 	return &jwtHandler{
-		secret: conf.GetSecret(),
-		pKey:   pKey,
+		pKey: pkey,
 	}
 }
 

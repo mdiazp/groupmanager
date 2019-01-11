@@ -1,6 +1,10 @@
 package main
 
 import (
+	"crypto/rand"
+	"crypto/rsa"
+	"crypto/x509"
+	"encoding/pem"
 	"flag"
 	"fmt"
 	"log"
@@ -42,8 +46,46 @@ func main() {
 	}
 	defer db.Close()
 
+	///////////////////////////////////////////////////////////////////////////////////
 	//JWT Handler
-	jwth := api.NewJWTHandler(&config.JWTConfig)
+	keyFile, e := os.OpenFile(configPath+"/key.perm", os.O_RDWR|os.O_CREATE, 0660)
+	if e != nil {
+		log.Fatalf("Fail opening key.pem file")
+		panic(e)
+	}
+	defer keyFile.Close()
+	keyBytes := FileToBytes(keyFile)
+	keyBlock, _ := pem.Decode(keyBytes)
+	var pKey *rsa.PrivateKey
+	alreadyDefined := (keyBlock != nil)
+	if !alreadyDefined {
+		pKey, e = rsa.GenerateKey(rand.Reader, 512)
+		if e != nil {
+			log.Fatalf("Fail at rsa.GenerateKey")
+			panic(e)
+		}
+	} else {
+		pKey, e = x509.ParsePKCS1PrivateKey(keyBlock.Bytes)
+		if e != nil {
+			log.Fatalf("Fail at parse privateKey")
+			panic(e)
+		}
+	}
+
+	jwth := api.NewJWTHandler(pKey)
+
+	// Save the pkey if it was not defined
+	if !alreadyDefined {
+		keyBlock = &pem.Block{
+			Type:  "RSA PRIVATE KEY",
+			Bytes: x509.MarshalPKCS1PrivateKey(pKey),
+		}
+		if err := pem.Encode(keyFile, keyBlock); err != nil {
+			log.Fatalf("Failed to write data to key.pem: %s", err)
+			panic(e)
+		}
+	}
+	///////////////////////////////////////////////////////////////////////////////////
 
 	// LogFile
 	tim := time.Now()
