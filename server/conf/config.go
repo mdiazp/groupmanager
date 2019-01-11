@@ -10,10 +10,10 @@ import (
 type Configuration struct {
 	DatabaseConfig
 	LogsConfig
-	JWTConfig
 	ADConfig
 	HTTPConfig
 	APIDoc
+	ApiClients
 
 	UserRootConfig
 }

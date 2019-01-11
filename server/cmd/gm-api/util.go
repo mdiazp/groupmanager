@@ -23,3 +23,8 @@ func FileToBytes(f *os.File) []byte {
 	}
 	return buffer
 }
+
+type APIClient struct {
+	Name  string
+	Token string
+}

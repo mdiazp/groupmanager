@@ -38,7 +38,16 @@ func (c *Auth) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 	}
 
 	var user models.User
-	if claims.Provider != (string)(api.UserProviderRoot) {
+	if claims.Provider == (string)(api.UserProviderAPIClient) {
+		user = models.User{
+			ID:       0,
+			Provider: claims.Provider,
+			Username: claims.Username,
+			Name:     claims.Username,
+			Rol:      (string)(controllers.RolReadOnly),
+			Enabled:  true,
+		}
+	} else if claims.Provider != (string)(api.UserProviderRoot) {
 		e = c.DB().RetrieveUserByUsername(claims.Username, &user)
 		if e != nil {
 			if e == dbhandlers.ErrRecordNotFound {
@@ -47,7 +56,6 @@ func (c *Auth) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 			c.WE(w, e, 500)
 		}
 	} else {
-		c.WE(w, e, 500)
 		user = models.User{
 			ID:       0,
 			Provider: claims.Provider,

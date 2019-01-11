@@ -81,10 +81,10 @@ func addBTUPerms(ps *Permissions) {
 	*ps = append(*ps, PermissionRetrieveBTU)
 }
 func readOnly(ps *Permissions) {
-	*ps = append(*ps, PermissionRetrieveUser)
 	*ps = append(*ps, PermissionRetrieveGroup)
-	*ps = append(*ps, PermissionRetrieveGroupAdmin)
 	*ps = append(*ps, PermissionRetrieveGroupADUser)
+	// *ps = append(*ps, PermissionRetrieveUser)
+	// *ps = append(*ps, PermissionRetrieveGroupAdmin)
 }
 func all(ps *Permissions) {
 	addSessionPerms(ps)

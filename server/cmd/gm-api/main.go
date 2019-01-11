@@ -4,6 +4,7 @@ import (
 	"crypto/rand"
 	"crypto/rsa"
 	"crypto/x509"
+	"encoding/json"
 	"encoding/pem"
 	"flag"
 	"fmt"
@@ -12,6 +13,7 @@ import (
 	"os"
 	"time"
 
+	jwt "github.com/dgrijalva/jwt-go"
 	"github.com/mdiazp/gm/server/api"
 	"github.com/mdiazp/gm/server/api/routes"
 	"github.com/mdiazp/gm/server/conf"
@@ -48,7 +50,7 @@ func main() {
 
 	///////////////////////////////////////////////////////////////////////////////////
 	//JWT Handler
-	keyFile, e := os.OpenFile(configPath+"/key.perm", os.O_RDWR|os.O_CREATE, 0660)
+	keyFile, e := os.OpenFile(configPath+"/private-key.perm", os.O_RDWR|os.O_CREATE, 0660)
 	if e != nil {
 		log.Fatalf("Fail opening key.pem file")
 		panic(e)
@@ -59,7 +61,7 @@ func main() {
 	var pKey *rsa.PrivateKey
 	alreadyDefined := (keyBlock != nil)
 	if !alreadyDefined {
-		pKey, e = rsa.GenerateKey(rand.Reader, 512)
+		pKey, e = rsa.GenerateKey(rand.Reader, 1024)
 		if e != nil {
 			log.Fatalf("Fail at rsa.GenerateKey")
 			panic(e)
@@ -85,6 +87,43 @@ func main() {
 			panic(e)
 		}
 	}
+
+	///////////////////////////////////////////////////////////////////////////////////
+	// Make and save api-clients-tokens
+	apiClientsFile, e := os.Create(configPath + "/api-clients-tokens.json")
+	if e != nil {
+		log.Fatal("Failed to open api-clients-tokens.json file")
+		panic(e)
+	}
+	defer apiClientsFile.Close()
+
+	apis := make([]APIClient, 0)
+	for _, apiName := range config.APIClients {
+		claims := api.Claims{
+			Username:       apiName,
+			Provider:       (string)(api.UserProviderAPIClient),
+			StandardClaims: jwt.StandardClaims{},
+		}
+		token, e := jwth.GetToken(claims)
+		if e != nil {
+			log.Printf("Fail token generation for APIClient - %s, Error: %s\n", apiName, e.Error())
+			continue
+		}
+		apis = append(apis, APIClient{
+			Name:  apiName,
+			Token: token,
+		})
+	}
+	tmp, e := json.Marshal(apis)
+	if e != nil {
+		log.Printf(
+			"Failed to parse api-clients-tokens to json format, Error: %s\n",
+			e.Error(),
+		)
+	} else {
+		apiClientsFile.Write(tmp)
+	}
+	apiClientsFile.Close()
 	///////////////////////////////////////////////////////////////////////////////////
 
 	// LogFile
