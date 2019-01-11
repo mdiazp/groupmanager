@@ -14,6 +14,8 @@ type Configuration struct {
 	ADConfig
 	HTTPConfig
 	APIDoc
+
+	UserRootConfig
 }
 
 // LoadConfiguration ...

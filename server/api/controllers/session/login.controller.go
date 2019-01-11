@@ -60,17 +60,30 @@ func (c *loginController) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 		c.WE(w, fmt.Errorf("Invalid Credentials"), 401)
 	}
 
-	//Check User be registered
 	var user models.User
-	e = c.DB().RetrieveUserByUsername(cred.Username, &user)
-	if e != nil {
-		if e == dbhandlers.ErrRecordNotFound {
-			c.WE(w, fmt.Errorf("User is not registered"), 401)
+	if cred.Provider != (string)(api.UserProviderRoot) {
+		//Check User be registered
+		e = c.DB().RetrieveUserByUsername(cred.Username, &user)
+		if e != nil {
+			if e == dbhandlers.ErrRecordNotFound {
+				c.WE(w, fmt.Errorf("User is not registered"), 401)
+			}
+			c.WE(w, e, 500)
 		}
+		if user.Provider != cred.Provider {
+			c.WE(w, fmt.Errorf("Incorrect Provider"), 401)
+		}
+	} else {
+		ur, e := provider.GetUserRecords(cred.Username)
 		c.WE(w, e, 500)
-	}
-	if user.Provider != cred.Provider {
-		c.WE(w, fmt.Errorf("Incorrect Provider"), 401)
+		user = models.User{
+			ID:       0,
+			Provider: cred.Provider,
+			Username: ur.Username,
+			Name:     ur.Name,
+			Rol:      (string)(controllers.RolAdmin),
+			Enabled:  true,
+		}
 	}
 
 	//Check Enabled

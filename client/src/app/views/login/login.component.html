@@ -36,7 +36,9 @@
                   </mat-form-field>
               </div>
               <div style="display: flex; flex-flow: row-reverse">
-                  <button mat-raised-button color="primary" (click)="onLogin()">Login</button>
+                  <button mat-raised-button color="primary"
+                          (click)="onLogin()"
+                          [disabled]="loadingSession">Login</button>
               </div>
 
           </form>

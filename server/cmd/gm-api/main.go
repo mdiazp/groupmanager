@@ -58,7 +58,11 @@ func main() {
 	defer logFile.Close()
 
 	// ApiBase
-	apiBase = api.NewBase(db, logFile, jwth, config.ADConfig, config.PublicFolderPath, environment)
+	apiBase = api.NewBase(
+		db, logFile, jwth, config.ADConfig,
+		config.PublicFolderPath, environment,
+		config.UserRootPassword,
+	)
 	router := routes.Router(apiBase)
 
 	fmt.Println("Running at " + config.Host + ":" + config.Port)

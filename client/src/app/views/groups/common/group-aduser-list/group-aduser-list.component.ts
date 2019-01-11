@@ -106,7 +106,7 @@ export class GroupADUserListComponent implements OnInit, AfterViewInit, OnDestro
   onDelete(aduser: string, adname: string): void {
     const dialogRef = this.dialog.open(CheckDeleteDialogComponent, {
       data: {
-        msg: `Are you shure to remove user ${aduser} - ${adname} from this group?`,
+        msg: `Are you shure to remove user ${aduser} from this group?`,
       },
     });
 

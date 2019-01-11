@@ -50,7 +50,7 @@ type Base interface {
 
 // NewBase ...
 func NewBase(db dbH.Handler, logFile *os.File, jwth JWTHandler, adConfig conf.ADConfig,
-	publicFolderPath string, env string) Base {
+	publicFolderPath string, env string, userRootPassword string) Base {
 	return &base{
 		db:               db,
 		logger:           NewLogger(logFile),
@@ -58,6 +58,7 @@ func NewBase(db dbH.Handler, logFile *os.File, jwth JWTHandler, adConfig conf.AD
 		jwth:             jwth,
 		env:              env,
 		adConfig:         adConfig,
+		userRootPassword: userRootPassword,
 	}
 }
 
@@ -75,6 +76,7 @@ type base struct {
 	publicFolderPath string
 	env              string
 	adConfig         conf.ADConfig
+	userRootPassword string
 }
 
 func (b *base) DB() dbH.Handler {

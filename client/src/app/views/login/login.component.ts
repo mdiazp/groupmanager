@@ -24,6 +24,8 @@ export class LoginComponent implements OnInit {
   loading = true;
   providers: String[] = [];
 
+  loadingSession = false;
+
   constructor(private api: APIAccountService,
               private session: SessionService,
               private eh: ErrorHandlerService,
@@ -49,15 +51,18 @@ export class LoginComponent implements OnInit {
   }
 
   onLogin() {
+    this.loadingSession = true;
     this.api.Login(
       new Credentials(this.username.value, this.password.value, this.provider.value),
     ).subscribe(
       (session) => {
         this.session.Open(session);
+        this.loadingSession = false;
         this.router.navigate(['']);
       },
       (e) => {
         this.eh.HandleError(e);
+        this.loadingSession = false;
       }
     );
   }

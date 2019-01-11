@@ -6,6 +6,7 @@ import (
 	"time"
 
 	"github.com/mdiazp/gm/server/api"
+	"github.com/mdiazp/gm/server/api/controllers"
 	dbhandlers "github.com/mdiazp/gm/server/db/handlers"
 	"github.com/mdiazp/gm/server/db/models"
 )
@@ -37,15 +38,27 @@ func (c *Auth) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 	}
 
 	var user models.User
-	e = c.DB().RetrieveUserByUsername(claims.Username, &user)
-	if e != nil {
-		if e == dbhandlers.ErrRecordNotFound {
-			c.WE(w, fmt.Errorf("User Not Found"), 401)
+	if claims.Provider != (string)(api.UserProviderRoot) {
+		e = c.DB().RetrieveUserByUsername(claims.Username, &user)
+		if e != nil {
+			if e == dbhandlers.ErrRecordNotFound {
+				c.WE(w, fmt.Errorf("User Not Found"), 401)
+			}
+			c.WE(w, e, 500)
 		}
+	} else {
 		c.WE(w, e, 500)
+		user = models.User{
+			ID:       0,
+			Provider: claims.Provider,
+			Username: claims.Username,
+			Name:     "Root",
+			Rol:      (string)(controllers.RolAdmin),
+			Enabled:  true,
+		}
 	}
 
-	//Check Enabled property
+	// Check Enabled property
 	if !user.Enabled {
 		c.WE(w, fmt.Errorf("User is not enabled"), 401)
 	}
