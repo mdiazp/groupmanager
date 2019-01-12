@@ -22,7 +22,10 @@ type Base interface {
 	Logger() *log.Logger
 
 	JWTHandler() JWTHandler
+
+	GetHost() string
 	PublicFolderPath() string
+
 	GetEnv() string
 
 	GetUsersProvider(provider UserProvider) usersprovider.Provider
@@ -50,10 +53,11 @@ type Base interface {
 
 // NewBase ...
 func NewBase(db dbH.Handler, logFile *os.File, jwth JWTHandler, adConfig conf.ADConfig,
-	publicFolderPath string, env string, userRootPassword string) Base {
+	host string, publicFolderPath string, env string, userRootPassword string) Base {
 	return &base{
 		db:               db,
 		logger:           NewLogger(logFile),
+		host:             host,
 		publicFolderPath: publicFolderPath,
 		jwth:             jwth,
 		env:              env,
@@ -73,6 +77,7 @@ type base struct {
 	db               dbH.Handler
 	logger           *log.Logger
 	jwth             JWTHandler
+	host             string
 	publicFolderPath string
 	env              string
 	adConfig         conf.ADConfig
@@ -89,6 +94,10 @@ func (b *base) Logger() *log.Logger {
 
 func (b *base) JWTHandler() JWTHandler {
 	return b.jwth
+}
+
+func (b *base) GetHost() string {
+	return b.host
 }
 
 func (b *base) PublicFolderPath() string {

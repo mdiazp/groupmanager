@@ -61,24 +61,9 @@ func Router(base api.Base) http.Handler {
 
 	router := mux.NewRouter()
 
-	/*
-		router.
-			PathPrefix("/swagger/").
-			Handler(http.StripPrefix("/swagger/", http.FileServer(http.Dir(base.PublicFolderPath()))))
-	*/
-
 	router.
-		Host("swagger." + base.GetHost()).
-		Handler(http.FileServer(http.Dir(base.PublicFolderPath())))
-		/*
-			PathPrefix("/swagger/").
-			Handler(
-				http.StripPrefix(
-					"/swagger/",
-					http.FileServer(http.Dir(base.PublicFolderPath())),
-				),
-			)
-		*/
+		PathPrefix("/swagger/").
+		Handler(http.StripPrefix("/swagger/", http.FileServer(http.Dir(base.PublicFolderPath()))))
 
 	router.Use(logger)
 

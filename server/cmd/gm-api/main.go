@@ -140,7 +140,7 @@ func main() {
 
 	// ApiBase
 	apiBase = api.NewBase(
-		db, logFile, jwth, config.ADConfig,
+		db, logFile, jwth, config.ADConfig, config.Host,
 		config.PublicFolderPath, environment,
 		config.UserRootPassword,
 	)

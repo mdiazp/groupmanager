@@ -11,8 +11,8 @@ export interface Menu {
 
 const MENUITEMS_ROLADMIN = [
   { state: ['/', 'home'], name: 'Home', type: 'link', icon: 'home' },
-  { state: ['/', 'users'], name: 'Users', type: 'link', icon: 'build' },
-  { state: ['/', 'groups'], name: 'Groups', type: 'link', icon: 'build' },
+  { state: ['/', 'users'], name: 'Users', type: 'link', icon: 'perm_contact_calendar' },
+  { state: ['/', 'groups'], name: 'Groups', type: 'link', icon: 'date_range' },
 ];
 
 @Injectable()
