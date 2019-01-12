@@ -16,7 +16,7 @@ export class NewGroupDialogComponent implements OnInit {
   ngOnInit() {
   }
 
-  private getGroup(): Group {
+  public getGroup(): Group {
     return this.form.GetGroup();
   }
 }

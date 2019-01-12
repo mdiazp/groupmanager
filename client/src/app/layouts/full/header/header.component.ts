@@ -15,7 +15,7 @@ import { Router } from '@angular/router';
 export class AppHeaderComponent {
   constructor(protected http: Http,
               protected router: Router,
-              protected session: SessionService,
+              public session: SessionService,
               protected eh: ErrorHandlerService,
               protected api: APIAccountService) {}
 

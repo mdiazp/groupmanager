@@ -16,7 +16,7 @@ export class GroupOneComponent implements OnInit, OnDestroy {
   group: Group;
 
   private loadingSubject = new BehaviorSubject<boolean>(true);
-  private loading$ = this.loadingSubject.asObservable();
+  loading$ = this.loadingSubject.asObservable();
 
   private groupSubject = new BehaviorSubject<Group>(null);
   group$ = this.groupSubject.asObservable();

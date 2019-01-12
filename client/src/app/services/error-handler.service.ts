@@ -50,8 +50,9 @@ export class ErrorHandlerService {
       data: {
         message: msg,
         icon: 'error',
-        style: 'error'
-      }
+        style: 'error',
+      },
+      duration: 1000000,
     });
   }
 }

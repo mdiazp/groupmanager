@@ -15,7 +15,7 @@ export class UserOneComponent implements OnInit {
   user: User;
 
   private loadingSubject = new BehaviorSubject<boolean>(true);
-  private loading$ = this.loadingSubject.asObservable();
+  public loading$ = this.loadingSubject.asObservable();
 
 
   constructor(private router: Router,

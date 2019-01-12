@@ -68,27 +68,37 @@ func Router(base api.Base) http.Handler {
 	*/
 
 	router.
-		Host("swagger." + base.GetHost()).
-		Handler(http.FileServer(http.Dir(base.PublicFolderPath())))
+		Host("swagger.api." + base.GetHost()).
+		Handler(http.FileServer(http.Dir(base.PublicFolderPath() + "/swagger")))
+
+	router.
+		Host(base.GetHost()).
+		Handler(http.FileServer(http.Dir(base.PublicFolderPath() + "/dist")))
+
 		/*
-			PathPrefix("/swagger/").
-			Handler(
-				http.StripPrefix(
-					"/swagger/",
-					http.FileServer(http.Dir(base.PublicFolderPath())),
-				),
-			)
+			router.
+				Host("swagger." + base.GetHost()).
+				Handler(http.FileServer(http.Dir(base.PublicFolderPath())))
 		*/
-
-	router.Use(logger)
-
+	/*
+		PathPrefix("/swagger/").
+		Handler(
+			http.StripPrefix(
+				"/swagger/",
+				http.FileServer(http.Dir(base.PublicFolderPath())),
+			),
+		)
+	*/
+	// router.Use(logger)
+	api := router.Host("api." + base.GetHost()).Subrouter()
+	api.Use(logger)
 	for _, ctr := range ctrs {
 		var h http.Handler = ctr
 		if ctr.GetAccess() != "" {
 			h = middlewares.CheckAccessControl(base, ctr)
 			h = middlewares.MustAuth(base, h)
 		}
-		router.Handle(ctr.GetRoute(), h).Methods(ctr.GetMethods()...)
+		api.Handle(ctr.GetRoute(), h).Methods(ctr.GetMethods()...)
 	}
 
 	h := cors.AllowAll().Handler(router)
