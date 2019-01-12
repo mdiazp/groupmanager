@@ -41,6 +41,7 @@ paths:
           description: Unauthorized
         '500':
           description: Internal Server Error
+
   /user:
     post:
       tags:
@@ -247,7 +248,7 @@ paths:
         - $ref: '#/parameters/desc'
         - $ref: '#/parameters/groups.nameSubstr'
         - $ref: '#/parameters/groups.actived'
-        - $ref: '#/parameters/groups.adminid'
+        - $ref: '#/parameters/groups.aduser'
       responses:
         '200':
           schema:
@@ -267,7 +268,7 @@ paths:
         - $ref: '#/parameters/authToken'
         - $ref: '#/parameters/groups.nameSubstr'
         - $ref: '#/parameters/groups.actived'
-        - $ref: '#/parameters/groups.adminid'
+        - $ref: '#/parameters/groups.aduser'
       responses:
         '200':
           schema:
@@ -326,6 +327,7 @@ paths:
       parameters:
         - $ref: '#/parameters/authToken'
         - $ref: '#/parameters/group.id.inpath'
+        - $ref: '#/parameters/groupadmin.usernamePrefix'
         - $ref: '#/parameters/offset'
         - $ref: '#/parameters/limit'
         - $ref: '#/parameters/orderby'
@@ -348,6 +350,89 @@ paths:
       parameters:
         - $ref: '#/parameters/authToken'
         - $ref: '#/parameters/group.id.inpath'
+        - $ref: '#/parameters/groupadmin.usernamePrefix'
+      responses:
+        '200':
+          schema:
+            type: integer
+          description: OK
+        '403':
+          description: Forbidden
+        '500':
+          description: Internal Server Error
+
+  /group/{id}/adusers/{aduser}:
+    put:
+      tags:
+        - groupaduser
+      parameters:
+        - $ref: '#/parameters/authToken'
+        - $ref: '#/parameters/group.id.inpath'
+        - $ref: '#/parameters/aduser.inpath'
+      responses:
+        '201':
+          schema:
+            $ref: '#/definitions/groupaduser'
+          description: Created
+        '400':
+          description: Bad Request
+        '403':
+          description: Forbidden
+        '404':
+          description: Not Found
+        '500':
+          description: Internal Server Error
+    delete:
+      tags:
+        - groupaduser
+      parameters:
+        - $ref: '#/parameters/authToken'
+        - $ref: '#/parameters/group.id.inpath'
+        - $ref: '#/parameters/aduser.inpath'
+      responses:
+        '200':
+          schema:
+            $ref: '#/definitions/groupaduser'
+          description: Created
+        '400':
+          description: Bad Request
+        '403':
+          description: Forbidden
+        '404':
+          description: Not Found
+        '500':
+          description: Internal Server Error
+  /group/{id}/adusers:
+    get:
+      tags:
+        - groupaduser
+      parameters:
+        - $ref: '#/parameters/authToken'
+        - $ref: '#/parameters/group.id.inpath'
+        - $ref: '#/parameters/groupaduser.adUserPrefix'
+        - $ref: '#/parameters/offset'
+        - $ref: '#/parameters/limit'
+        - $ref: '#/parameters/orderby'
+        - $ref: '#/parameters/desc'
+      responses:
+        '200':
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/groupaduser'
+          description: OK
+        '403':
+          description: Forbidden
+        '500':
+          description: Internal Server Error
+  /group/{id}/aduserscount:
+    get:
+      tags:
+        - groupaduser
+      parameters:
+        - $ref: '#/parameters/authToken'
+        - $ref: '#/parameters/group.id.inpath'
+        - $ref: '#/parameters/groupaduser.adUserPrefix'
       responses:
         '200':
           schema:
@@ -494,6 +579,9 @@ definitions:
       GroupID:
         format: interger
         type: integer
+      GroupName:
+        format: character varying
+        type: string
     type: object
   groupadminToPost:
     properties:
@@ -503,6 +591,30 @@ definitions:
       GroupID:
         format: interger
         type: integer
+    type: object
+  groupaduser:
+    properties:
+      ID:
+        format: integer
+        type: integer
+        description: |-
+          Note:
+          This is a Primary Key.<pk/>
+      ADUser:
+        maxLength: 100
+        format: character varying
+        type: string
+      ADName:
+        maxLength: 100
+        format: character varying
+        type: string
+      GroupID:
+        format: interger
+        type: integer
+      GroupName:
+        maxLength: 100
+        format: character varying
+        type: string
     type: object
 
   btuUser:
@@ -646,18 +758,24 @@ parameters:
     required: false
     in: query
     type: boolean
-  groups.adminid:
-    name: adminid
+  groups.aduser:
+    name: aduser
     description: for horizontal filtering
     required: false
     in: query
-    type: integer
+    type: string
   groupadmin.groupid:
     name: groupID
     description: for horizontal filtering
     required: true
     in: query
     type: integer
+  groupadmin.usernamePrefix:
+    name: usernamePrefix
+    description: for horizontal filtering
+    required: false
+    in: query
+    type: string
   groupadminToPost.in.body:
     name: GroupAdminToPost
     description: info for creation
@@ -665,6 +783,18 @@ parameters:
     schema:
       $ref: '#/definitions/groupadminToPost'
     in: body
+  aduser.inpath:
+    name: aduser
+    description: Aduser
+    required: true
+    in: path
+    type: string
+  groupaduser.adUserPrefix:
+    name: adUserPrefix
+    description: for horizontal filtering
+    required: false
+    in: query
+    type: string
 
   btu.usernamePrefix.inpath:
     name: usernamePrefix
