@@ -29,7 +29,7 @@ func main() {
 		apiBase     api.Base
 		e           error
 	)
-	flag.StringVar(&configPath, "configpath", "/etc/gm-api", "Direccion del fichero de configuracion.")
+	flag.StringVar(&configPath, "configpath", "/etc/upr-gm", "Direccion del fichero de configuracion.")
 	flag.StringVar(&environment, "env", "prod", "Entorno de ejecucion")
 	flag.Parse()
 
@@ -52,7 +52,7 @@ func main() {
 	//JWT Handler
 	keyFile, e := os.OpenFile(configPath+"/private-key.perm", os.O_RDWR|os.O_CREATE, 0660)
 	if e != nil {
-		log.Fatalf("Fail opening key.pem file")
+		log.Fatalf("Fail opening private-key.pem file")
 		panic(e)
 	}
 	defer keyFile.Close()

@@ -2,8 +2,8 @@ swagger: '2.0'
 info:
   version: 0.1 (beta)
   title: api-gm
-  description: Group Manager
-host: 'api.gm.local:1234'
+  description: UPR Group Manager
+host: 'api-gm.local:1234'
 basePath: /
 schemes:
   - http

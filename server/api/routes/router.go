@@ -68,12 +68,12 @@ func Router(base api.Base) http.Handler {
 	*/
 
 	router.
-		Host("swagger.api." + base.GetHost()).
+		Host("swagger-" + base.GetHost()).
 		Handler(http.FileServer(http.Dir(base.PublicFolderPath() + "/swagger")))
 
 	router.
 		Host(base.GetHost()).
-		Handler(http.FileServer(http.Dir(base.PublicFolderPath() + "/dist")))
+		Handler(http.FileServer(http.Dir(base.PublicFolderPath() + "/client")))
 
 		/*
 			router.
@@ -90,7 +90,7 @@ func Router(base api.Base) http.Handler {
 		)
 	*/
 	// router.Use(logger)
-	api := router.Host("api." + base.GetHost()).Subrouter()
+	api := router.Host("api-" + base.GetHost()).Subrouter()
 	api.Use(logger)
 	for _, ctr := range ctrs {
 		var h http.Handler = ctr

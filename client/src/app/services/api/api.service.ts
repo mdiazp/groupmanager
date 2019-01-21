@@ -11,9 +11,11 @@ import { map } from 'rxjs/operators';
 
 import { SessionService } from '../session.service';
 import { isNullOrUndefined } from 'util';
+import { environment } from '../../../environments/environment';
 
 export class APIService {
-    protected APIPath = 'http://api.gm.local:1234';
+    protected APIPath = environment.apiBasePath;
+    // protected APIPath = 'http://api-gm.local:1234';
     protected AuthTokenHeader = 'AuthToken';
 
     constructor(protected http: Http,
